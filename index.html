@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+  <title>Образовательная платформа | Главная</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #f0f2f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 0;
+      margin: 0;
+    }
+
+    .page-wrapper {
+      width: 100%;
+      max-width: 1400px;
+      background: #ffffff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 0 40px rgba(0, 0, 0, 0.05);
+      margin: 0 auto;
+      border-radius: 0;
+      position: relative;
+    }
+
+    .content-container {
+      padding: 28px 36px 36px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 32px;
+    }
+
+    .page-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      letter-spacing: -0.8px;
+      color: #0b1b32;
+      line-height: 1.2;
+    }
+
+    .menu-wrapper {
+      position: relative;
+    }
+
+    .three-dots-btn {
+      background: #f1f4f9;
+      border: none;
+      font-size: 1.8rem;
+      color: #1e293b;
+      cursor: pointer;
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      transition: background 0.2s;
+      line-height: 1;
+    }
+
+    .three-dots-btn:hover {
+      background: #e0e5ef;
+    }
+
+    .dropdown-menu {
+      position: absolute;
+      right: 0;
+      top: 58px;
+      background: #ffffff;
+      border-radius: 18px;
+      box-shadow: 0 20px 35px rgba(0, 0, 0, 0.08), 0 8px 16px rgba(0, 0, 0, 0.04);
+      min-width: 280px;
+      padding: 8px 0;
+      display: none;
+      z-index: 20;
+      border: 1px solid rgba(0, 0, 0, 0.04);
+    }
+
+    .dropdown-menu.visible {
+      display: block;
+    }
+
+    .menu-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 15px 20px;
+      font-size: 0.98rem;
+      font-weight: 500;
+      color: #0f172a;
+      cursor: pointer;
+      transition: background 0.15s;
+      white-space: nowrap;
+      background: transparent;
+      border: none;
+      width: 100%;
+      text-align: left;
+      font-family: inherit;
+    }
+
+    .menu-item i {
+      width: 22px;
+      font-size: 1.15rem;
+      color: #2c3e50;
+      text-align: center;
+    }
+
+    .menu-item:hover {
+      background: #f5f7fc;
+      margin: 0 8px;
+      width: calc(100% - 16px);
+      border-radius: 10px;
+    }
+
+    .cookies-submenu {
+      position: absolute;
+      left: -360px;
+      top: 0;
+      background: #ffffff;
+      border-radius: 18px;
+      box-shadow: 0 20px 35px rgba(0, 0, 0, 0.1), 0 8px 16px rgba(0, 0, 0, 0.05);
+      min-width: 340px;
+      max-height: 500px;
+      overflow-y: auto;
+      padding: 8px 0;
+      display: none;
+      z-index: 25;
+      border: 1px solid rgba(0, 0, 0, 0.04);
+    }
+
+    .cookies-submenu.visible {
+      display: block;
+    }
+
+    .cookies-header {
+      padding: 14px 20px 10px;
+      font-weight: 650;
+      font-size: 0.95rem;
+      color: #0b1b32;
+      border-bottom: 1px solid #edf2f7;
+      margin-bottom: 4px;
+      position: sticky;
+      top: 0;
+      background: #ffffff;
+      z-index: 1;
+    }
+
+    .cookie-topic {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 10px 20px;
+      font-size: 0.88rem;
+      color: #1e293b;
+      cursor: pointer;
+      transition: background 0.15s;
+      background: transparent;
+      border: none;
+      width: 100%;
+      text-align: left;
+      font-family: inherit;
+      line-height: 1.35;
+    }
+
+    .cookie-topic:hover {
+      background: #f5f7fc;
+    }
+
+    .cookie-topic-number {
+      font-weight: 700;
+      color: #2563eb;
+      min-width: 24px;
+    }
+
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(6px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      visibility: hidden;
+      opacity: 0;
+      transition: visibility 0.2s, opacity 0.25s ease;
+      padding: 20px;
+    }
+
+    .modal-overlay.active {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    .modal-dialog {
+      background: #ffffff;
+      border-radius: 28px;
+      max-width: 700px;
+      width: 100%;
+      max-height: 85vh;
+      overflow-y: auto;
+      box-shadow: 0 30px 50px rgba(0, 0, 0, 0.2);
+      padding: 32px 30px 28px;
+      position: relative;
+      transform: translateY(10px);
+      transition: transform 0.25s ease;
+    }
+
+    .modal-overlay.active .modal-dialog {
+      transform: translateY(0);
+    }
+
+    .modal-quick-exit {
+      position: absolute;
+      top: 16px;
+      left: 20px;
+      background: #fee2e2;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #991b1b;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.2s;
+      font-family: inherit;
+      z-index: 5;
+    }
+
+    .modal-quick-exit:hover {
+      background: #fecaca;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 16px;
+      right: 20px;
+      background: #f1f4f9;
+      border: none;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      font-size: 1.2rem;
+      color: #334155;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+      z-index: 5;
+    }
+
+    .modal-close:hover {
+      background: #e2e8f0;
+    }
+
+    .modal-topic-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #0b1b32;
+      margin-bottom: 18px;
+      margin-top: 10px;
+      padding-right: 40px;
+      line-height: 1.4;
+    }
+
+    .modal-body {
+      color: #1e293b;
+      font-size: 0.95rem;
+      line-height: 1.7;
+      white-space: pre-line;
+    }
+
+    .photo-gallery {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin: 12px 0 32px;
+      width: 100%;
+    }
+
+    .photo-card {
+      aspect-ratio: 4 / 3;
+      border-radius: 24px;
+      overflow: hidden;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.06);
+      transition: transform 0.25s ease, box-shadow 0.25s;
+      background-color: #dce3eb;
+    }
+
+    .photo-card:hover {
+      transform: scale(1.02);
+      box-shadow: 0 16px 28px rgba(0, 0, 0, 0.1);
+    }
+
+    .photo1 {
+      background-image: url('https://images.pexels.com/photos/4145153/pexels-photo-4145153.jpeg?auto=compress&cs=tinysrgb&w=800');
+    }
+
+    .photo2 {
+      background-image: url('https://images.pexels.com/photos/4145190/pexels-photo-4145190.jpeg?auto=compress&cs=tinysrgb&w=800');
+    }
+
+    .photo3 {
+      background-image: url('https://images.pexels.com/photos/4145354/pexels-photo-4145354.jpeg?auto=compress&cs=tinysrgb&w=800');
+    }
+
+    .games-section {
+      margin-top: auto;
+      display: flex;
+      flex-direction: column;
+      padding: 8px 0 4px;
+    }
+
+    .games-section-title {
+      font-size: 1.4rem;
+      font-weight: 650;
+      color: #0b1b32;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      letter-spacing: -0.3px;
+    }
+
+    .games-section-title i {
+      color: #2563eb;
+      font-size: 1.5rem;
+    }
+
+    .games-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      width: 100%;
+    }
+
+    .game-card {
+      background: #f9fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 20px;
+      padding: 20px 18px 18px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+      text-align: left;
+      font-family: inherit;
+      color: inherit;
+      width: 100%;
+    }
+
+    .game-card:hover {
+      background: #ffffff;
+      border-color: #cbd5e1;
+      box-shadow: 0 14px 26px rgba(0, 0, 0, 0.06);
+      transform: translateY(-2px);
+    }
+
+    .game-card:active {
+      transform: scale(0.98);
+      background: #f1f5f9;
+    }
+
+    .game-icon {
+      font-size: 1.9rem;
+      color: #0f2b4b;
+      margin-bottom: 6px;
+    }
+
+    .game-title {
+      font-weight: 650;
+      font-size: 1.05rem;
+      color: #0f172a;
+      line-height: 1.3;
+    }
+
+    .game-desc {
+      font-size: 0.85rem;
+      color: #475569;
+      line-height: 1.45;
+      font-weight: 400;
+    }
+
+    @media (max-width: 1024px) {
+      .content-container {
+        padding: 24px 28px 32px;
+      }
+      .page-title {
+        font-size: 2.2rem;
+      }
+      .cookies-submenu {
+        left: auto;
+        right: 0;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .photo-gallery {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .content-container {
+        padding: 20px 20px 28px;
+      }
+      .page-title {
+        font-size: 1.9rem;
+      }
+      .games-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+      .cookies-submenu {
+        left: auto;
+        right: 0;
+        min-width: 280px;
+      }
+    }
+
+    @media (max-width: 500px) {
+      .photo-gallery {
+        grid-template-columns: 1fr;
+      }
+      .games-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-wrapper">
+    <div class="content-container">
+      <div class="header">
+        <h1 class="page-title">Образовательная платформа</h1>
+        <div class="menu-wrapper">
+          <button class="three-dots-btn" id="menuToggleBtn" aria-label="Меню">
+            <i class="fas fa-ellipsis-v"></i>
+          </button>
+          <div class="dropdown-menu" id="dropdownMenu">
+            <button class="menu-item" id="privacyPolicyBtn">
+              <i class="fas fa-shield-alt"></i> Политика конфиденциальности
+            </button>
+            <button class="menu-item" id="contactUsBtn">
+              <i class="fas fa-envelope"></i> Связаться с нами
+            </button>
+            <button class="menu-item" id="aboutBtn">
+              <i class="fas fa-circle-info"></i> О платформе
+            </button>
+            <button class="menu-item" id="cookiesBtn">
+              <i class="fas fa-cookie-bite"></i> Файлы cookies
+            </button>
+            <div class="cookies-submenu" id="cookiesSubmenu">
+              <div class="cookies-header">Темы для говорения</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="photo-gallery">
+        <div class="photo-card photo1" title="Ребёнок занимается за ноутбуком"></div>
+        <div class="photo-card photo2" title="Девочка на онлайн-уроке"></div>
+        <div class="photo-card photo3" title="Дети используют ноутбуки"></div>
+      </div>
+
+      <div class="games-section">
+        <div class="games-section-title">
+          <i class="fas fa-puzzle-piece"></i> Создать игру
+        </div>
+        <div class="games-grid">
+          <button class="game-card" id="gameAnagram">
+            <span class="game-icon"><i class="fas fa-random"></i></span>
+            <span class="game-title">Анаграммы</span>
+            <span class="game-desc">Переставь буквы, чтобы получилось слово. Развивает словарный запас и логику.</span>
+          </button>
+          <button class="game-card" id="gameFindMistake">
+            <span class="game-icon"><i class="fas fa-magnifying-glass"></i></span>
+            <span class="game-title">Найди ошибку</span>
+            <span class="game-desc">В предложении спрятана грамматическая или смысловая ошибка. Найди и исправь.</span>
+          </button>
+          <button class="game-card" id="gameSynonyms">
+            <span class="game-icon"><i class="fas fa-book-open"></i></span>
+            <span class="game-title">Синонимы & Антонимы</span>
+            <span class="game-desc">Подбери пару к слову: синоним или антоним. Тренировка речи и памяти.</span>
+          </button>
+          <button class="game-card" id="gameOddOne">
+            <span class="game-icon"><i class="fas fa-border-none"></i></span>
+            <span class="game-title">Что лишнее?</span>
+            <span class="game-desc">В ряду предметов или слов найди тот, что не подходит по смыслу.</span>
+          </button>
+          <button class="game-card" id="gameBuildSentence">
+            <span class="game-icon"><i class="fas fa-pen-to-square"></i></span>
+            <span class="game-title">Собери предложение</span>
+            <span class="game-desc">Из перемешанных слов составь правильное предложение. Основы грамматики.</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Модальные окна -->
+  <div class="modal-overlay" id="privacyModal">
+    <div class="modal-dialog">
+      <button class="modal-quick-exit" id="quickExitPrivacy"><i class="fas fa-sign-out-alt"></i> Быстро выйти</button>
+      <button class="modal-close" id="closePrivacyModal"><i class="fas fa-times"></i></button>
+      <div class="modal-topic-title">Политика конфиденциальности</div>
+      <div class="modal-body">
+        <p><strong>Дата последнего обновления:</strong> 1 июня 2026 года</p>
+        <p>Настоящая Политика конфиденциальности описывает, как Образовательная платформа собирает, использует, хранит и защищает персональные данные пользователей.</p>
+        <p><strong>1. Какие данные мы собираем</strong></p>
+        <p>Имя и фамилия, адрес электронной почты и номер телефона, данные об успеваемости и прогрессе в играх, техническая информация: IP-адрес, тип браузера, время входа.</p>
+        <p><strong>2. Цели обработки данных</strong></p>
+        <p>Обеспечение работы образовательных игр и сервисов, улучшение качества контента, отправка уведомлений (только с вашего согласия), соблюдение требований законодательства РФ.</p>
+        <p><strong>3. Передача данных третьим лицам</strong></p>
+        <p>Мы не передаём персональные данные третьим лицам, за исключением случаев, предусмотренных законом.</p>
+        <p><strong>4. Хранение и безопасность</strong></p>
+        <p>Все данные хранятся на защищённых серверах на территории РФ с использованием шифрования (SSL/TLS).</p>
+        <p><strong>5. Ваши права</strong></p>
+        <p>Право на доступ, исправление, удаление данных, а также отзыв согласия на обработку.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="contactModal">
+    <div class="modal-dialog">
+      <button class="modal-quick-exit" id="quickExitContact"><i class="fas fa-sign-out-alt"></i> Быстро выйти</button>
+      <button class="modal-close" id="closeContactModal"><i class="fas fa-times"></i></button>
+      <div class="modal-topic-title">Связаться с нами</div>
+      <div class="modal-body">
+        <p>Мы всегда рады вашим вопросам, предложениям и отзывам.</p>
+        <p><strong>Email:</strong> hello@eduplatform.ru</p>
+        <p><strong>Телефон:</strong> +7 (495) 123-45-67</p>
+        <p><strong>Telegram:</strong> @eduplatform_support</p>
+        <p><strong>Адрес:</strong> г. Москва, ул. Образовательная, д. 10, офис 305</p>
+        <p><strong>Часы работы:</strong> Пн–Пт с 09:00 до 19:00 (МСК)</p>
+        <p>Для родителей: горячая линия 8-800-500-12-34 (бесплатно по РФ).</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="aboutModal">
+    <div class="modal-dialog">
+      <button class="modal-quick-exit" id="quickExitAbout"><i class="fas fa-sign-out-alt"></i> Быстро выйти</button>
+      <button class="modal-close" id="closeAboutModal"><i class="fas fa-times"></i></button>
+      <div class="modal-topic-title">О платформе</div>
+      <div class="modal-body">
+        <p><strong>Образовательная платформа</strong> — современное интерактивное пространство для развития детей от 6 до 14 лет.</p>
+        <p>Мы объединяем классические методики с игровыми механиками. Платформа предлагает: интерактивные игры, персонализированное обучение, безопасную среду без рекламы, статистику для родителей.</p>
+        <p>Наша команда — опытные педагоги, методисты и разработчики. Уже более 50 000 детей учатся вместе с нами!</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="topicModal">
+    <div class="modal-dialog">
+      <button class="modal-quick-exit" id="quickExitTopic"><i class="fas fa-sign-out-alt"></i> Быстро выйти</button>
+      <button class="modal-close" id="closeTopicModal"><i class="fas fa-times"></i></button>
+      <div class="modal-topic-title" id="topicModalTitle"></div>
+      <div class="modal-body" id="topicModalBody"></div>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      const topics = [
+        { number: 1, title: "Speak on the role of family in people's life.", text: "Family is the most important thing in life. It's where we learn to love, solve problems, and become who we are. A good family gives us support and security. But if there are problems, it can be a source of pain. Traditional families were stricter, but now families come in many forms. Sadly, many families break apart, and children suffer from divorce.\nThe main job of a family is to teach us how to handle arguments. In a healthy family, people don't shout or insult each other. They talk calmly, respect each other, and find solutions together. Without these skills, relationships become cold, people hold grudges, and the family falls apart.\nFor children, family is an example to follow. When parents support each other, kids grow up confident and happy. In broken families, children often miss the parent who lives away. But if parents can cooperate, children can become stronger.\nI want a family where we can disagree respectfully, support each other, and laugh together. Not perfect, but loving and real." },
+        { number: 2, title: "Speak on responsibilities of men and women in a family.", text: "In the past, men and women had very different roles. Women did all the housework: dusting, vacuuming, ironing, cooking. They also took care of children. Men worked and earned money. They did repairs and fixed things. That's just how it was.\nNow everything has changed. Many women work too. Couples share expenses and chores. Men now can cook and do laundry. Women can fix things too. But there can still be problems when chores pile up and everyone is tired. When arguments happen, couples need to respect each other, not call names. They should support each other and share the load.\nChildren should also help at home. Young kids can tidy up and throw out rubbish. Older kids can cook and clean. Teenagers can do laundry and help with younger siblings. This way they learn important life skills and grow up responsible.\nIn the end, a family works best when everyone helps — men, women, and children. It doesn't matter who does what. What matters is that people support each other and work together." },
+        { number: 3, title: "Make up an everyday menu. Do you take care of healthy nutrition?", text: "Life is so busy now that people don't have time to cook. They buy ready-made food, which is often unhealthy. Shops sell food with artificial sweeteners, chemical additives, and flavour enhancers. Food high in sugar is bad for teeth and body. Fatty food causes heart disease. To be healthy, we need fibre, carbohydrates, water, minerals, and vitamins.\nDay 1\nBreakfast: Oatmeal with strawberries and blueberries, skimmed milk, green tea.\nLunch: Grilled salmon with salad of lettuce, tomatoes, cucumbers, bell peppers.\nDinner: Roast chicken with potatoes and broccoli. Fruit salad for dessert.\nDay 2\nBreakfast: Scrambled eggs with spinach and mushrooms, rye bread, orange juice.\nLunch: Quinoa salad with shrimps, avocado, tomatoes, and herbs.\nDinner: Beef steak with mashed potatoes and green beans. Baked apple for dessert.\nDay 3\nBreakfast: Fruit smoothie with banana, strawberries, yoghurt, honey. Nuts on the side.\nLunch: Vegetable soup with lentils and carrots. Whole grain bun.\nDinner: Baked cod with new potatoes, Brussels sprouts, carrots. Fresh berries for dessert.\nI try to eat balanced meals, not skip meals, and avoid snacks. I don't watch TV while eating. I enjoy every bite and arrange food nicely." },
+        { number: 4, title: "What's your view on shopping? Is shopping your everyday routine or a pleasant duty?", text: "Shopping is different for everyone. For some it's boring, for others it's fun. I have a balanced opinion.\nWhen I have time, I prefer offline shopping with a friend. I like visiting shopping centres or markets. Stores are bright, clean, and well-organized. Prices are clearly marked.\nWhen I buy clothes, I always try them on. I check if they fit well and look good. I'm not a spendthrift — I think before buying. I prefer custom-made clothes sometimes because they fit better. I ask shop assistants for advice.\nAt the checkout, I don't like long queues. I keep track of my spending.\nOverall, shopping for me is a pleasant duty. It can be enjoyable if you plan ahead and know what you need." },
+        { number: 5, title: "Speak on sports. Are you an active sport-doer or just an enthusiastic fan?", text: "Sport is great for health. It strengthens bones and muscles, lowers blood pressure, and reduces the risk of diabetes. It also helps relieve stress and boosts self-esteem.\nI'm moderately sporty. I do morning exercises every day and work out with online videos twice a week. I do push-ups, sit-ups, lunges, and squats. I also stretch a lot. This helps me build stamina, burn calories, and feel good.\nAt school, I took part in sports competitions. We played handball and football. Sometimes we won, sometimes we lost. I learned teamwork and communication. In swimming, I was usually last, but it helped me relax and improve my posture.\nI'm not a crazy fan, but I like watching figure skating and gymnastics. I admire athletes who are fit and graceful. Sport is great, but you also need a balanced diet, good sleep, and no bad habits." },
+        { number: 6, title: "Will you look back on your college life as a pleasant experience in the future?", text: "Yes, I will. When I think about it, I feel emotional because it's almost over.\nThe beginning was hard. I was a terrible procrastinator, always missing deadlines. I was shy and afraid of speaking in public. I never participated in discussions.\nBut something changed. I learned to cope with my fears. I started studying on my own, making progress. I improved my English — speaking, writing, listening. I became more confident. I even got healthier.\nThe best part was my friends. They supported me through difficult times. We laughed together, shared secrets, and helped each other. They saw me at my worst and still stayed.\nNow I have to pass final exams. I want to do well — not for grades, but because these four years deserve it. I learned pedagogy, psychology, teaching methods. Now I want to become a good teacher, just like my teachers inspired me.\nSo yes, I will look back with a smile — and tears." },
+        { number: 7, title: "The problem of addictions is of current importance, isn't it?", text: "Addictions are a huge problem today. Drugs, alcohol, smoking, and gambling destroy millions of lives.\nDrugs are the most dangerous. People start out of curiosity or peer pressure, then become addicted. Heroin and cocaine cause heart problems, drowsiness, and mental disorders. Withdrawal is painful. Sharing needles spreads HIV.\nAlcohol is especially common among young people. They drink to fit in. Alcohol weakens senses and clouds judgment. Drunk drivers are killers. Long-term abuse damages health.\nSmoking is still common. Nicotine is highly addictive and causes cancer and heart disease. Passive smoking harms others too. Many want to quit but find it very difficult.\nGambling and gaming addictions are growing. Online casinos and games keep people playing for hours. This leads to financial ruin and broken relationships.\nWhy do people become addicted? Often because of stress, family problems, or copying friends. Weak willpower and media glamorizing drinking don't help.\nThe consequences are terrible: ruined careers, broken families, even death. But there is hope — treatment programs, support from doctors, and a healthy lifestyle can help.\nWe need to help addicts recover, not judge them." },
+        { number: 8, title: "Suppose you are a guide and describe the most interesting regions in London. Which places in London will you recommend the tourists to visit?", text: "London is a huge, exciting city. It has four main parts, each very different.\nThe City — This is the financial centre. Banks, offices, stock exchange. Busy during the day, empty at night.\nWestminster — The political heart. Here you'll find:\n· Houses of Parliament and Big Ben — Gothic buildings by the Thames.\n· Westminster Abbey — Where kings and queens have been crowned since 1066. Poets' Corner has graves of famous writers.\n· Buckingham Palace — The Queen's home. Watch the Changing of the Guard.\nThe West End — The entertainment centre. Theatres, shops, restaurants.\n· Piccadilly Circus — Busy intersection with bright ads. Popular on New Year's Eve.\n· Trafalgar Square — Nelson's Column with four lions. National Gallery nearby.\n· British Museum — Ancient treasures like the Rosetta Stone and Egyptian mummies.\nThe East End — Once a working-class area with docks. Now it has nice restaurants and the Tower of London. The Tower is an ancient fortress with Crown Jewels and ravens — legend says if ravens leave, the kingdom will fall.\nThere are also beautiful parks like Hyde Park and St. James's Park. Modern attractions include the London Eye and Tate Modern.\nAs Samuel Johnson said: \"If you are tired of London, you are tired of life.\"" },
+        { number: 9, title: "Suppose you are a guide and describe the most interesting regions in Minsk. Which places in Minsk will you recommend the tourists to visit?", text: "Minsk is the capital of Belarus, a modern and beautiful city. It's clean, well-maintained, and has many attractions.\nStart at Independence Avenue — the main street with shops and buildings. Visit Independence Square with the Red Church, and Victory Square — a memorial to war heroes.\nThe Upper Town is the old part of the city. Here you'll find the Holy Spirit Cathedral, the Town Hall, and charming cobblestone streets. Trinity Suburb is a peaceful area with colourful houses and cosy cafes by the river.\nMinsk has great museums:\n· Museum of the Great Patriotic War — one of the largest, with thousands of exhibits about heroism.\n· National Art Museum — works by famous artists.\n· Museum of History of Minsk — shows how the city grew.\nFor relaxation, visit parks like Gorky Park, Chelyuskintsev Park, or Loshytsky Park with its old manor house.\nCulture lovers can enjoy theatres — the Opera and Ballet Theatre, Gorky Drama Theatre, and Kupala Theatre.\nFor shopping, go to Galleria Minsk.\nMinsk has a unique atmosphere and rich history. It's a city that never fails to impress." },
+        { number: 10, title: "TV — a blessing or a curse? Are you a TV-addict?", text: "TV has become a big part of our lives. People rush home to watch their favourite shows. But is it good or bad?\nIn films, directors can do retakes to improve scenes. At theatre, actors have only one chance to touch the audience's hearts.\nTheatre is live — actors feel the audience's reaction and adjust their performance. A good play combines great acting, beautiful music, and spectacular staging. The audience gets emotionally involved and often gives standing ovations.\nCinema is different. Movies have special effects and can show anything. But it's not \"alive\" — we don't see real people in front of us. Also, business often ruins art. Actors become commercial pawns, and writers follow boring commercial formulas.\nI prefer theatre because it's magical. The play leaves lasting impressions and makes us think." },
+        { number: 11, title: "There is nothing better than travelling by plane. Compare different means of travelling", text: "By plane — fastest and most convenient for long distances. Great views from above. But tickets can be sold out, security checks are stressful, flights are often delayed, and it's bad for the environment.\nBy train — slower but more enjoyable. You can see landscapes, talk to fellow passengers, and prices are stable. Trains are more eco-friendly. Staff is polite, and there's a buffet car. But tickets may be sold out too.\nBy car — you control everything. Lots of space, no need to book tickets. But there are traffic jams, speed cameras, roadworks, and sudden hazards. Driving can be stressful.\nBy sea — a unique experience. Ships are like floating cities with everything on board. You can relax, explore new ports, go on excursions. But you can't come back whenever you want, and there's risk of seasickness or storms.\nEach way has pros and cons. The best choice depends on time, budget, and personal preference." },
+        { number: 12, title: "They say that teaching is a vocation. Do you share this point of view?", text: "I strongly believe that teaching is a true calling, not just a job.\nA teacher does much more than give information. They are organizers who plan lessons and maintain discipline. They are motivators who inspire students and make their hearts warm up to the subject. They are facilitators who provide tools for learning and incorporate visual aids. A good teacher has genuine care for children and affects them positively.\nA teacher must also be flexible — switching between different roles in one lesson. They need a versatile mind and must stay up-to-date, constantly learning new things. Students absorb every word of their teacher, which shows the significant influence a teacher has.\nWithout a true calling, a teacher can easily become disillusioned and give up. Good teachers don't want just a career — they want to help people express themselves and become independent. They give their hearts and souls to students.\nTeaching is about inspiring, guiding, and making a real difference in people's lives. That's what makes it a true vocation." },
+        { number: 13, title: "Speak on the most outstanding painters in the world.", text: "Thomas Gainsborough — famous for portraits and landscapes. He painted from nature with a fine sense of colour and poetic sensibility. His work moved people to tears. He became the favourite painter of the Royal Family.\nJoshua Reynolds — first president of the Royal Academy. He specialized in portraying the gentry in a grand, classical style. He tried to get into the mind of his sitters and accentuate their best qualities.\nJohn Constable — devoted to nature, painted the English countryside. His loose style was criticized in England but loved in France. His painting \"The Hay Wain\" became an unsurpassed masterpiece. He is recognized as one of the originators of the British landscape school.\nJ.M.W. Turner — a child prodigy who exhibited at 15. He used colour to evoke emotions rather than show literal truth. Critics mocked his use of yellow, but he ignored them. His painting \"The Fighting Temeraire\" is an elegy to a hero ship.\nAnthony van Dyck — court painter to King Charles I. He invented a casual, elegant style, flattering his clients. His influence overshadowed later British portraitists.\nThese painters broke traditions, received royal commissions, and gained international fame. Their work still grips audiences today." },
+        { number: 14, title: "Speak on the heroism of the Belarusian people during the Great Patriotic War.", text: "Belarusian people showed incredible heroism during the war. Defenders of the Brest Fortress withstood a month-long siege, beat back numerous attacks, and never gave up. They stood to death. On the walls are inscriptions: \"There were three of us. It was hard but we did not lose our courage and are dying a hero's death\", \"I'm dying but shall not surrender. Farewell, Motherland.\"\nKhatyn is a tragic memorial. On March 22, 1943, Nazis burned 149 people alive in a barn — 76 of them children. A memorial complex was set up in 1969. Twenty-six burnt houses are represented by monuments with bells. Every two minutes the bells ring out mournfully.\nOver 2,230,000 Belarusians were killed. 136 villages were burned down with their inhabitants and never rebuilt. Nearly every fourth citizen fell in the fight against fascism.\nThe liberation began in autumn 1943. On July 3, 1944, Minsk was liberated. This day is now celebrated as Independence Day.\nWe must remember and honor these heroes. Memorials like Khatyn, Brest Fortress, and Victory Square with the Eternal Flame help us never forget." },
+        { number: 15, title: "The ecological situation on our planet is disastrous. Do you also think so? How can we help our world to survive?", text: "Yes, the ecological situation is disastrous. We face global warming, pollution, deforestation, acid rain, ozone depletion, and ocean pollution.\nGlobal warming — we burn fuels, releasing carbon dioxide. This makes the Earth hotter. We see melting ice at the Poles and extreme weather like hurricanes, floods, droughts, and heat waves.\nPollution — factories and cars release poisonous chemicals into the air, creating smog. Pesticides, fertilizers, and toxic waste go into rivers and soil, making water unfit for consumption.\nDeforestation — forests are cut down every day. Wildlife is threatened because habitats are destroyed. Many animals become endangered or go extinct.\nOcean pollution — plastic waste forms huge garbage patches like the Pacific Garbage Patch. Animals mistake plastic for food, which rips apart the food chain.\nEnergy problem — fossil fuels are finite. We can't keep consuming without thinking of tomorrow.\nSolutions:\n· Use renewable energy — sun, wind, water.\n· Stop burning so many fuels. Use public transport.\n· Use fewer pesticides. Switch to organic farming.\n· Recycle more. Avoid single-use plastic.\n· Protect forests and national parks.\n· Raise public awareness.\nThe solutions are in our hands. We must act now. The Earth is our only home." },
+        { number: 16, title: "What's the difference between watching a movie at the cinema and a play at the theatre?", text: "Theatre is live; cinema is recorded. At a play, actors perform in real-time on stage. You witness their interpretation right there. At the cinema, you watch an edited version with multiple takes and adjustments.\nIn theatre, each performance is unique. Actors must deliver lines flawlessly. When they show inspiration, it creates a special connection. In cinema, the performance is fixed forever.\nAt the cinema, the experience is casual — dark room, big screen, special effects. At the theatre, it's more formal — curtain rises, sets, costumes, lighting create atmosphere.\nIn cinema, the audience is passive — viewers are isolated from performers. In theatre, the audience is active — applause, laughter, even standing ovations can influence the performance.\nCinema uses close-ups and camera angles to create intimacy. Theatre relies on raw live acting, which can be more moving and harrowing.\nFilms are edited and polished. Theatre has no retakes — what you see is final. Both can be wonderful, but in different ways." },
+        { number: 17, title: "What is the family? Why do people marry and why do they divorce? What are the main problems that family faces?", text: "Family is the basic unit of society — people connected by blood, marriage, or adoption. Ideally, family provides love, support, and belonging.\nWhy marry? People marry for love, companionship, emotional security, financial benefits, social expectations, and to start a family. When partners are compatible, they build a happy marriage.\nWhy divorce? Many marriages fail. Reasons include: poor communication, growing apart, infidelity, financial stress, unrealistic expectations, toxic behavior, and lack of commitment. Divorce causes pain, especially for children.\nMain family problems:\n· Communication problems — people bottle up feelings, arguments escalate.\n· Unresolved conflicts — old issues resurface, resentment builds.\n· Different values — family members don't see eye to eye.\n· Emotional stress — family life is an emotional rollercoaster.\n· Sibling rivalry — brothers and sisters fight.\n· Taking each other for granted.\nConflict is natural in any close relationship. But with good communication, respect, and support, families can overcome problems and stay strong." },
+        { number: 18, title: "What makes a good language teacher? Speak about a teacher who influenced you most.", text: "A good language teacher plays many roles: motivator, organizer, facilitator, and mentor. They inspire students without demanding beyond their abilities. They plan lessons, maintain discipline, and provide tools for learning. They modify methods to match students' needs and keep up with their interest.\nA good teacher uses visual aids, holds discussions, and switches between different tasks to prevent boredom. They have a pleasant nature and genuine concern for children. They never put students down or make them feel stupid.\nI had a math teacher who influenced me greatly. At first I was afraid of her because she seemed strict. But she was fair, kind, and passionate about her subject. She kept discipline without being scary. She showed genuine care for students and made learning exciting.\nShe used different activities — discussions, group work, visual aids — so nobody got bored. She showed how to apply knowledge in real life. She made us think critically. She never gave up on teaching. She poured all her knowledge into her students.\nShe became my role model." },
+        { number: 19, title: "Are there any differences between eating out and having meals at home?", text: "Atmosphere — Restaurants offer nice décor and service. Fast-food places are clean but not romantic. At home, you create your own comfortable atmosphere.\nMenu — Restaurants have extensive menus with fresh dishes. Fast-food menus are limited. At home, you control quality and portion sizes.\nPrice — Restaurants can be expensive. Fast-food is cheaper. Home cooking is generally more affordable.\nSpeed — Fast-food is quick. Traditional restaurants offer leisurely dining. At home, you can eat quickly or take your time.\nNutrition — At restaurants, you don't always know what's in your food. Burgers can be high in fat and calories. At home, you choose healthy ingredients, cut down on salt and sugar.\nSocial aspect — Eating out is often for celebrations. Home meals strengthen family bonds.\nFor a change, eating out is wonderful. But for daily meals, home cooking is more practical, healthier, and more personal." },
+        { number: 20, title: "Imagine that you've been invited to a job interview. What are your steps to impress your potential employer?", text: "Getting invited to a job interview is a great opportunity, and you need to be well-prepared to make a positive impression. Here are the steps I would take to impress my potential employer.\nBefore the Interview\nResearch is essential. Before the interview, I would find out as much as possible about the company and the position. I would visit the company website, read about their mission and values, and understand what they do. This shows the employer that I am genuinely interested and have done my homework. I would also review the job description carefully to understand what skills and qualities they are looking for.\nPrepare your documents. I would bring a pen to fill in an application form if needed. I would bring copies of my CV, certificates, diplomas, and letters of recommendation. A covering letter should accompany my CV. I would organize all documents neatly in a folder so I can access them easily.\nDress appropriately. Appearance counts! First impressions matter a lot. I would wear professional, clean, and well-ironed clothes. No one will employ you if you look as though you have wandered out of a disco. Smart business attire shows respect for the interviewer and the company.\nBe on time. Punctuality is a sign of responsibility and self-discipline. I would arrive at least 10-15 minutes early. This gives me time to relax, review my notes, and compose myself before the interview. Being late would create a bad impression.\nPrepare questions. I would think of at least one or two intelligent questions to ask at the end of the interview. For example, I might ask about the company culture or opportunities for professional development. This shows that I am serious about the job and have thought about my future there.\nAt the Interview\nMake a good first impression. I would enter the room with confidence, smile, and greet the interviewer politely. I would shake hands firmly but not too hard. I would not sit down until I am invited. I would not smoke, chew gum, or do anything else that might seem unprofessional.\nAnswer questions clearly. I would listen carefully to each question and take a moment to think before answering. I would be clear and concise, giving specific examples from my experience whenever possible. If I don't know something, I would admit it honestly but stress that I am willing to learn. It's better to be honest than to pretend and be caught out.\nShow enthusiasm. I would concentrate on what the interviewer is saying, maintain eye contact, and show genuine interest. I would not interrupt, but I would show that I am engaged by nodding and responding appropriately. Enthusiasm is contagious and shows that I would be a motivated employee.\nBe yourself. I would not be hostile or too ingratiating. Compulsive behaviour turns off your authenticity. Leaving an employer indifferent is the worst impression. I would be natural, relaxed, and authentic. I would not try to be someone I'm not, because that would be obvious and would not serve me well in the long run.\nAccentuate your best attributes. I would never stress poor aspects of myself. Instead, I would always show my best side — my keenness to work, my sense of responsibility, my willingness to learn, and my ambition. I would highlight my relevant skills and experience, and explain how they would benefit the company.\nAfter the Interview\nFollow up. I would not despair if I felt nervous — everyone is nervous at interviews. If the worst comes to the worst, I could ask for another interview. I would not give up — I might still be in with a chance.\nReflect and learn. After the interview, I would reflect on how it went. What would I have done differently? I would use the experience to improve for next time. Each interview is a learning opportunity.\nConclusion\nTo impress your potential employer, you need to be prepared, enthusiastic, and authentic. Appearance counts, attitude matters, and honesty is key. Do not throw away your chances. Hang on, be yourself, and shine. The world is your oyster — go and make your way in the world!" },
+        { number: 21, title: "Speak about similarities and differences between living in the country and living in a big city.", text: "Jobs and money — Cities have more job opportunities. In villages, there are fewer jobs but lower cost of living.\nTransport — Cities have good public transport but traffic jams. Villages have no public transport, but you can walk everywhere.\nLifestyle — Cities are fast-paced and busy, with many amenities. Villages are calm and peaceful, with a greater sense of community.\nSafety — Cities have higher crime rates. Villages are safer — people often leave doors unlocked.\nHealth — Cities have excellent hospitals but polluted air. Villages have cleaner air but doctors are far away.\nNegative sides — In cities, people don't know their neighbours. In villages, everyone knows everyone — that can be both good and bad.\nI want the best of both worlds — a quiet village house for weekends and a city apartment for work. The village offers peace and safety. The city offers my future, my career, and my dreams." },
+        { number: 22, title: "Speak on the role of love and marriage in your life.", text: "I believe in love and am happy for friends who found their perfect partner. I haven't experienced serious romantic love yet, but I know that if someone is meant for you, they will stay.\nLove can make you feel on top of the world, but it's important to stay balanced. Conflict is normal in any close relationship. Some people bottle up their feelings until they explode. Others use hurtful words and let arguments get out of control. This can destroy relationships.\nI'm in favour of marriage as a declaration of love, where partners see eye to eye and support each other. In a strong marriage, people close ranks during crises, pour their hearts out, and help each other grow. When children arrive, parents must create a loving home without hostility or trauma.\nI would never settle for a partner who holds me back or constantly nags me. I believe partners should respect each other and work through problems.\nMarriage is a beautiful commitment when both partners grow together, face challenges together, and become the best versions of themselves." },
+        { number: 23, title: "Imagine that you are an ecologist how would you solve the environmental problems?", text: "As an ecologist, I see many environmental problems threatening our planet. The situation is alarming, but the solutions are in our hands.\nGlobal warming is the most serious issue. We burn fossil fuels, releasing carbon dioxide that makes the Earth hotter. This causes melting ice at the Poles and extreme weather. To solve this, we must invest in renewable energy — solar, wind, and hydroelectric power. We should use public transport, walk, or cycle instead of driving.\nPollution is another huge problem. Factories release poisonous chemicals into the air. Pesticides and toxic waste go into rivers and soil. We need stricter regulations on industrial emissions. Farmers should switch to organic farming. People must stop littering and buy green products.\nDeforestation is happening at an alarming rate. Forests are cut down, destroying habitats. Many animals become endangered or go extinct. We need laws that stop clear-cutting of forests. We should create more national parks to protect wildlife.\nAcid rain kills trees and damages buildings. The solution is to reduce emissions from power stations. We also need to fix the holes in the ozone layer by stopping the use of CFCs.\nOcean pollution is becoming a disaster. Animals mistake plastic for food, which rips apart the food chain. I would propose banning single-use plastics and promoting biodegradable materials.\nThe energy problem is linked to all these issues. Fossil fuels are finite. We must invest in renewable energy technologies and improve energy efficiency.\nWhat can you do? Recycle paper, plastic, and glass. Avoid single-use plastic. Save energy at home. Support environmental groups.\nThe most important thing is to raise public awareness. We must stop manipulating nature without thought. The Earth is our only home. If we take steps now, we can clean up our world and live in harmony with nature." },
+        { number: 24, title: "Travel broadens the mind, and raises the spirits. Do you share the same point of view? Speak about travelling of your dream.", text: "I fully agree that travel broadens the mind and raises the spirits. Every trip is a chance to explore something new, learn about other cultures, and see beautiful landscapes.\nMy dream journey is a sea voyage. I love ships with their decks, cabins, and staterooms. The most exciting moment is going up the gangway and hearing the siren.\nI dream of sailing across the pure ocean, calling at several ports. I want brilliant sunny weather and calm sea. I want to explore new ports, go on excursions, and enjoy breathtaking landscapes.\nShips are like floating cities with modern conveniences. On the promenade deck, you feel fresh air, see the waves, and hear seagulls. I want to bask under the sun, take sunbaths, and relax in a deckchair.\nSea travel is an unforgettable experience. It helps get away from daily stress and renew your spirit. Travel is not just about seeing new places — it's about discovering yourself." },
+        { number: 25, title: "Imagine that you're writing a guidebook to Belarus. Make up a list of the most important places which should be included in the book and mention the main facts about them.", text: "Welcome to Belarus, a country with rich history, beautiful nature, and unique cultural traditions. Each region has its own treasures.\nVitebsk Region — The Braslav Lakes are the largest lake group. Polotsk is the birthplace of Francis Skaryna, the first printer. The Marc Chagall Museum is dedicated to the great artist. The Yelnya swamp is the largest swamp in Belarus.\nGrodno Region — Grodno became an important political center. The Upper Castle was the beginning of its architectural splendor. The Swiss Valley is one of the most picturesque places for walks.\nGomel Region — The Turov land is famous for its unique tradition of beekeeping, included in the UNESCO list. The Gomel Palace and Park Ensemble is one of the most luxurious places in the country.\nBrest Region — Belovezhskaya Pushcha is the oldest reserve in Europe, home to the European bison. The Brest Fortress is a symbol of heroism — its defenders withstood a month-long siege. The Khatyn Memorial commemorates a terrible tragedy where 149 people were burned alive.\nNesvizh Castle — Amazes with its grandeur. The Golden Hall, Hetman's Hall, and beautiful parks make it a living chronicle of glorious times.\nEach region of Belarus is a unique page in our history. Good luck and have a good trip!" },
+        { number: 26, title: "You are writing a script of a documentary about Great Britain. Write about the parts of the country you would like to mention and show in your film.", text: "Great Britain is four different countries: England, Scotland, Wales, and Northern Ireland.\nEngland — In the South there are historical towns: Stratford-upon-Avon (Shakespeare's birthplace), Bath (Roman remains), Oxford and Cambridge (university towns). The West has quintessential villages with cute shops and old water mills. The North has the Lake District — a stunning combination of mountains and lakes. London has the Tower of London, Westminster Abbey, St. Paul's, and great museums.\nScotland — Edinburgh is dominated by an imposing 12th-century castle. The Highlands are a mountainous region of stunning beauty. Visit Loch Lomond. Try a 'high tea' — one substantial course with bread, jam, and cakes.\nWales — Small but charming. Famous for castles — more castles per square mile than anywhere else. Visit Conwy Castle and Snowdonia National Park.\nNorthern Ireland — The Giant's Causeway is an extraordinary volcanic formation. Belfast has a lively cultural scene.\nGreat Britain is rich in diversity — history, nature, culture. Have a good trip and come back with wonderful memories!" },
+        { number: 27, title: "Speak on the role of music in your life.", text: "Music holds a significant place in everyone's life. It's more than just entertainment — it's a powerful force that shapes our emotions, thoughts, and even our bodies. From the lullabies we hear as babies to the songs that define our youth, music is everywhere. It has the unique ability to touch our souls and express feelings that words alone cannot convey. I can confidently say that music has played a very important role in my life, and I would like to share why.\nFirst of all, music is a powerful tool for emotional well-being. Life can be stressful, and we all go through difficult times. When I feel sad, anxious, or overwhelmed, listening to music helps me process those emotions. Sometimes, when I can't find the right words to describe how I feel, a song says it perfectly. Calming and gentle music can soothe anxiety and lift my mood almost instantly. On the other hand, upbeat and energetic music can make me feel happy and motivated. It's like having a friend who always understands you, no matter what. Music helps me overcome negative feelings and feel more balanced.\nSecondly, music has a unique ability to bring people together. Think about concerts, music festivals, or even just singing together with friends. These shared experiences create strong bonds between people. When you're at a concert and everyone around you is singing the same song, there's a feeling of connection and belonging that is hard to find anywhere else. Music also connects us to memories. A single song can transport me back to a specific moment in time — a happy summer, a school trip, or a special moment with friends. It's like a time machine that brings back feelings and memories we thought we had forgotten.\nMusic also affects us physically. Science has shown that soothing music can help normalize heart rate and blood pressure. Upbeat rhythms release endorphins — our body's natural \"feel-good\" chemicals that reduce pain and make us happy. That's why music is often used in therapy and rehabilitation. Even just listening to music while exercising can make a huge difference — it gives you energy and helps you keep going. Music truly has the power to heal both body and mind.\nNow, speaking about my personal taste, my favourite artist is Eminem. He is a self-taught genius who broke racial barriers in hip-hop and gained worldwide fame. His mastery technique and honest lyrics grip millions of listeners around the globe. One of his most moving songs is \"Mockingbird\" — a heartfelt letter to his daughter. This song evokes nostalgia, helps soothe away stress, and refreshes the spirit. Eminem has won 15 Grammys, an Oscar, and sold over 220 million records. He is a prolific artist whose outstanding contribution to music is worthy of serious attention. I admire him not just for his talent, but for his honesty and his ability to turn pain into art.\nIn conclusion, music is not a luxury — it's a necessity for emotional balance and mental health. It helps us express ourselves, connect with others, and heal from pain. It can lift us up when we're down, energize us when we're tired, and comfort us when we're lonely. Whether we listen to classical, rock, pop, hip-hop, or any other genre, music enriches our lives in countless ways. I believe that without music, the world would be a much sadder and emptier place. Music truly allows the human spirit to flourish, making our lives richer, healthier, and more deeply connected.\nMusic is not a luxury — it's a necessity for emotional balance and mental health." },
+        { number: 28, title: "Doctors say that prevention is better than cure. Do you agree with this point of view? What doctor are you afraid of most of all?", text: "I strongly agree that prevention is better than cure. It's wiser to take care of health before problems arise than to deal with serious illnesses later.\nWhen you get sick, you feel awful — cough, runny nose, headache, fever. You go to the doctor, they examine you and prescribe medicine. But wouldn't it be better to avoid getting sick?\nThe doctor I'm most afraid of is the dentist. I try to keep good oral hygiene — brush teeth, use floss, mouthwash. But I have a sweet tooth, which causes cavities. Dentists fill teeth, give injections, or pull teeth out. The fear of these procedures makes regular check-ups essential.\nWhen people ignore their health, they burn the candle at both ends, become overtired and run down. Prevention means: giving up smoking, cutting down on sugar, taking regular exercise, and getting enough sleep.\nRegular check-ups, good hygiene, healthy eating, and exercise prevent many problems. An ounce of prevention is worth a pound of cure." },
+        { number: 29, title: "You are writing a review of your favorite film. What details will you include?", text: "\"Knock on My Door\" is a Turkish romantic series from 2020. It was very popular in Turkey and abroad.\nPlot — Eda dreams of becoming an architect. Serkan is a successful businessman. They start a fake relationship, but then real feelings develop. The plot has romance, drama, humour, and life problems. The characters are perfectly chosen and play their roles convincingly.\nVisual style — Beautiful locations, bright cinematography. Outfits are stylish, decorations are impressive. It looks authentic and atmospheric.\nOverall — The series blends romance, drama, and comedy. It's enjoyable and entertaining, though some might find it slow or clichéd. But for me, it's associated with summer and the main characters. Eda and Serkan make a great couple.\nI recommend watching it for relaxation. It's not a waste of time — it's a sweet, feel-good series." },
+        { number: 30, title: "What are the most dangerous diseases/maladies of the XXI century?", text: "Coronavirus — A global pandemic. Highly contagious. Symptoms include sore throat, headache, cough, fever, loss of taste and smell. Some recover, others die. Vaccination was introduced.\nAllergies — A disease of the 21st century. The immune system reacts abnormally to things like food, dust, pollen, or medicine. Symptoms: stuffy nose, wheezing, skin rash, watery eyes. Allergies are often hereditary. There's no cure, but allergy shots can help.\nStress — One of the most common diseases today. Caused by exams, work problems, difficult life situations. Symptoms: headaches, nervousness, lack of concentration, loss of appetite. Stress can cause job loss and relationship problems. People need to overcome stress through relaxation and support.\nClimate-related diseases — Connected with climate changes — heat, poor air quality, temperature changes. These worsen existing conditions.\nWe need to take care of ourselves, follow doctors' advice, and remember that health is our most valuable asset." }
+      ];
+
+      const menuToggleBtn = document.getElementById('menuToggleBtn');
+      const dropdownMenu = document.getElementById('dropdownMenu');
+      const cookiesBtn = document.getElementById('cookiesBtn');
+      const cookiesSubmenu = document.getElementById('cookiesSubmenu');
+      const topicModal = document.getElementById('topicModal');
+      const topicModalTitle = document.getElementById('topicModalTitle');
+      const topicModalBody = document.getElementById('topicModalBody');
+      const closeTopicModal = document.getElementById('closeTopicModal');
+      const quickExitTopic = document.getElementById('quickExitTopic');
+
+      // Заполняем суб-меню темами
+      topics.forEach(topic => {
+        const btn = document.createElement('button');
+        btn.className = 'cookie-topic';
+        btn.innerHTML = `<span class="cookie-topic-number">${topic.number}.</span> <span>${topic.title}</span>`;
+        btn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          cookiesSubmenu.classList.remove('visible');
+          dropdownMenu.classList.remove('visible');
+          topicModalTitle.textContent = topic.title;
+          topicModalBody.textContent = topic.text;
+          topicModal.classList.add('active');
+          document.body.style.overflow = 'hidden';
+        });
+        cookiesSubmenu.appendChild(btn);
+      });
+
+      function toggleMenu() {
+        dropdownMenu.classList.toggle('visible');
+        if (!dropdownMenu.classList.contains('visible')) {
+          cookiesSubmenu.classList.remove('visible');
+        }
+      }
+
+      function closeMenu() {
+        dropdownMenu.classList.remove('visible');
+        cookiesSubmenu.classList.remove('visible');
+      }
+
+      function closeTopicModalFn() {
+        topicModal.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+
+      menuToggleBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        toggleMenu();
+      });
+
+      document.addEventListener('click', function(event) {
+        if (!dropdownMenu.contains(event.target) && event.target !== menuToggleBtn && !menuToggleBtn.contains(event.target)) {
+          closeMenu();
+        }
+      });
+
+      cookiesBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        cookiesSubmenu.classList.toggle('visible');
+      });
+
+      document.addEventListener('click', function(event) {
+        if (!cookiesSubmenu.contains(event.target) && event.target !== cookiesBtn && !cookiesBtn.contains(event.target)) {
+          cookiesSubmenu.classList.remove('visible');
+        }
+      });
+
+      closeTopicModal.addEventListener('click', closeTopicModalFn);
+      quickExitTopic.addEventListener('click', closeTopicModalFn);
+
+      topicModal.addEventListener('click', function(e) {
+        if (e.target === topicModal) closeTopicModalFn();
+      });
+
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+          closeTopicModalFn();
+          closeMenu();
+          document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active'));
+          document.body.style.overflow = '';
+        }
+      });
+
+      // Модальные окна для остальных пунктов
+      const privacyModal = document.getElementById('privacyModal');
+      const contactModal = document.getElementById('contactModal');
+      const aboutModal = document.getElementById('aboutModal');
+
+      document.getElementById('privacyPolicyBtn').addEventListener('click', function(e) {
+        e.stopPropagation();
+        closeMenu();
+        privacyModal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      });
+
+      document.getElementById('contactUsBtn').addEventListener('click', function(e) {
+        e.stopPropagation();
+        closeMenu();
+        contactModal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      });
+
+      document.getElementById('aboutBtn').addEventListener('click', function(e) {
+        e.stopPropagation();
+        closeMenu();
+        aboutModal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      });
+
+      document.getElementById('closePrivacyModal').addEventListener('click', function() {
+        privacyModal.classList.remove('active');
+        document.body.style.overflow = '';
+      });
+      document.getElementById('quickExitPrivacy').addEventListener('click', function() {
+        privacyModal.classList.remove('active');
+        document.body.style.overflow = '';
+      });
+
+      document.getElementById('closeContactModal').addEventListener('click', function() {
+        contactModal.classList.remove('active');
+        document.body.style.overflow = '';
+      });
+      document.getElementById('quickExitContact').addEventListener('click', function() {
+        contactModal.classList.remove('active');
+        document.body.style.overflow = '';
+      });
+
+      document.getElementById('closeAboutModal').addEventListener('click', function() {
+        aboutModal.classList.remove('active');
+        document.body.style.overflow = '';
+      });
+      document.getElementById('quickExitAbout').addEventListener('click', function() {
+        aboutModal.classList.remove('active');
+        document.body.style.overflow = '';
+      });
+
+      [privacyModal, contactModal, aboutModal].forEach(modal => {
+        modal.addEventListener('click', function(e) {
+          if (e.target === modal) {
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+          }
+        });
+      });
+
+      // Игры
+      function startGame(name, desc) {
+        alert(`🎮 Запуск игры: «${name}»\n\n${desc}\n\n(В реальной версии здесь откроется игровой модуль.)`);
+      }
+
+      document.getElementById('gameAnagram').addEventListener('click', () => startGame('Анаграммы', 'Переставляйте буквы, чтобы составить слово.'));
+      document.getElementById('gameFindMistake').addEventListener('click', () => startGame('Найди ошибку', 'Ищите орфографические и пунктуационные ошибки.'));
+      document.getElementById('gameSynonyms').addEventListener('click', () => startGame('Синонимы & Антонимы', 'Подбирайте синонимы и антонимы к словам.'));
+      document.getElementById('gameOddOne').addEventListener('click', () => startGame('Что лишнее?', 'Найдите предмет, который не вписывается в логический ряд.'));
+      document.getElementById('gameBuildSentence').addEventListener('click', () => startGame('Собери предложение', 'Расставьте слова в правильном порядке.'));
+    })();
+  </script>
+</body>
+</html>
