@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+  <title>Создание игры | Образовательная платформа</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #f0f2f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 0;
+      margin: 0;
+    }
+
+    .page-wrapper {
+      width: 100%;
+      max-width: 1400px;
+      background: #ffffff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 0 40px rgba(0, 0, 0, 0.05);
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .content-container {
+      padding: 28px 36px 36px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    /* Шапка */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 28px;
+    }
+
+    .page-title {
+      font-size: 2.2rem;
+      font-weight: 700;
+      letter-spacing: -0.8px;
+      color: #0b1b32;
+      line-height: 1.2;
+    }
+
+    .back-btn {
+      background: #f1f4f9;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 14px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: #0b1b32;
+      cursor: pointer;
+      transition: background 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: inherit;
+      text-decoration: none;
+    }
+
+    .back-btn:hover {
+      background: #e0e5ef;
+    }
+
+    /* Основной контент: форма + список */
+    .main-layout {
+      display: flex;
+      gap: 28px;
+      flex: 1;
+    }
+
+    /* Левая часть — форма */
+    .form-section {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .form-card {
+      background: #f9fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 24px;
+      padding: 28px;
+    }
+
+    .form-card-title {
+      font-size: 1.3rem;
+      font-weight: 650;
+      color: #0b1b32;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .form-card-title i {
+      color: #2563eb;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #334155;
+      margin-bottom: 8px;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 13px 16px;
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      font-size: 0.95rem;
+      font-family: inherit;
+      color: #0f172a;
+      background: #ffffff;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      outline: none;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: #2563eb;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.08);
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .form-row {
+      display: flex;
+      gap: 16px;
+    }
+
+    .form-row .form-group {
+      flex: 1;
+    }
+
+    .btn-primary {
+      background: #0f2b4b;
+      color: white;
+      border: none;
+      border-radius: 16px;
+      padding: 16px 32px;
+      font-size: 1.05rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: background 0.2s, transform 0.1s;
+      font-family: inherit;
+      width: 100%;
+      margin-top: 8px;
+    }
+
+    .btn-primary:hover {
+      background: #153356;
+    }
+
+    .btn-primary:active {
+      transform: scale(0.98);
+    }
+
+    /* Правая часть — список игр */
+    .games-list-section {
+      width: 340px;
+      flex-shrink: 0;
+      display: none;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .games-list-section.visible {
+      display: flex;
+    }
+
+    .games-list-title {
+      font-size: 1.1rem;
+      font-weight: 650;
+      color: #0b1b32;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 4px;
+    }
+
+    .games-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-height: 500px;
+      overflow-y: auto;
+    }
+
+    .saved-game-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 16px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .saved-game-card:hover {
+      border-color: #cbd5e1;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.04);
+    }
+
+    .saved-game-type {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #2563eb;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+    }
+
+    .saved-game-name {
+      font-weight: 650;
+      font-size: 0.95rem;
+      color: #0f172a;
+      margin-bottom: 4px;
+    }
+
+    .saved-game-date {
+      font-size: 0.78rem;
+      color: #94a3b8;
+    }
+
+    .empty-state {
+      text-align: center;
+      color: #94a3b8;
+      padding: 40px 20px;
+    }
+
+    .empty-state i {
+      font-size: 2.5rem;
+      display: block;
+      margin-bottom: 12px;
+    }
+
+    /* Уведомление */
+    .toast {
+      position: fixed;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: #0f172a;
+      color: white;
+      padding: 16px 28px;
+      border-radius: 16px;
+      font-weight: 500;
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      z-index: 1000;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+      transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      font-family: inherit;
+    }
+
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .toast i {
+      color: #4ade80;
+    }
+
+    /* Адаптация */
+    @media (max-width: 900px) {
+      .main-layout {
+        flex-direction: column;
+      }
+      .games-list-section {
+        width: 100%;
+      }
+      .form-row {
+        flex-direction: column;
+        gap: 0;
+      }
+      .content-container {
+        padding: 20px 20px 28px;
+      }
+      .page-title {
+        font-size: 1.8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-wrapper">
+    <div class="content-container">
+      <!-- Шапка -->
+      <div class="header">
+        <h1 class="page-title">Создание игры</h1>
+        <a href="index.html" class="back-btn">
+          <i class="fas fa-arrow-left"></i> На главную
+        </a>
+      </div>
+
+      <!-- Основной блок -->
+      <div class="main-layout">
+        <!-- Левая часть — форма -->
+        <div class="form-section">
+          <div class="form-card">
+            <div class="form-card-title">
+              <i class="fas fa-puzzle-piece"></i> Новая игра
+            </div>
+
+            <div class="form-group">
+              <label>Тип игры</label>
+              <select id="gameType">
+                <option value="">Выберите тип игры...</option>
+                <option value="anagram">Анаграммы</option>
+                <option value="findMistake">Найди ошибку</option>
+                <option value="synonyms">Синонимы & Антонимы</option>
+                <option value="oddOne">Что лишнее?</option>
+                <option value="buildSentence">Собери предложение</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Название игры</label>
+              <input type="text" id="gameName" placeholder="Например: Анаграммы для 3 класса">
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label>Возрастная группа</label>
+                <select id="gameAge">
+                  <option value="">Выберите...</option>
+                  <option value="6-8">6–8 лет</option>
+                  <option value="9-11">9–11 лет</option>
+                  <option value="12-14">12–14 лет</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Уровень сложности</label>
+                <select id="gameDifficulty">
+                  <option value="">Выберите...</option>
+                  <option value="easy">Лёгкий</option>
+                  <option value="medium">Средний</option>
+                  <option value="hard">Сложный</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Описание игры</label>
+              <textarea id="gameDescription" placeholder="Опишите правила, цель игры, количество заданий..."></textarea>
+            </div>
+
+            <div class="form-group">
+              <label>Содержание (задания, слова, предложения)</label>
+              <textarea id="gameContent" placeholder="Введите задания для игры:&#10;1. Слово: АБРИКОС → Анаграмма: БИРОКАС&#10;2. Предложение: Я иду в школа → Ошибка: школу&#10;..."></textarea>
+            </div>
+
+            <button class="btn-primary" id="saveGameBtn">
+              <i class="fas fa-save"></i> Сохранить игру
+            </button>
+          </div>
+        </div>
+
+        <!-- Правая часть — список игр -->
+        <div class="games-list-section" id="gamesListSection">
+          <div class="games-list-title">
+            <i class="fas fa-list-check"></i> Сохранённые игры
+          </div>
+          <div class="games-list" id="gamesList">
+            <div class="empty-state" id="emptyState">
+              <i class="fas fa-gamepad"></i>
+              <p>Нет созданных игр</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Уведомление -->
+  <div class="toast" id="toast">
+    <i class="fas fa-check-circle"></i>
+    <span id="toastMessage">Игра сохранена!</span>
+  </div>
+
+  <script>
+    (function() {
+      // Элементы
+      const gameType = document.getElementById('gameType');
+      const gameName = document.getElementById('gameName');
+      const gameAge = document.getElementById('gameAge');
+      const gameDifficulty = document.getElementById('gameDifficulty');
+      const gameDescription = document.getElementById('gameDescription');
+      const gameContent = document.getElementById('gameContent');
+      const saveGameBtn = document.getElementById('saveGameBtn');
+      const gamesListSection = document.getElementById('gamesListSection');
+      const gamesList = document.getElementById('gamesList');
+      const emptyState = document.getElementById('emptyState');
+      const toast = document.getElementById('toast');
+      const toastMessage = document.getElementById('toastMessage');
+
+      // Загружаем сохранённые игры
+      let savedGames = JSON.parse(localStorage.getItem('eduGames') || '[]');
+
+      // Типы игр для отображения
+      const gameTypeLabels = {
+        'anagram': 'Анаграммы',
+        'findMistake': 'Найди ошибку',
+        'synonyms': 'Синонимы & Антонимы',
+        'oddOne': 'Что лишнее?',
+        'buildSentence': 'Собери предложение'
+      };
+
+      const gameTypeIcons = {
+        'anagram': 'fa-random',
+        'findMistake': 'fa-magnifying-glass',
+        'synonyms': 'fa-book-open',
+        'oddOne': 'fa-border-none',
+        'buildSentence': 'fa-pen-to-square'
+      };
+
+      // Показать уведомление
+      function showToast(message) {
+        toastMessage.textContent = message;
+        toast.classList.add('show');
+        setTimeout(() => {
+          toast.classList.remove('show');
+        }, 3000);
+      }
+
+      // Обновить список игр
+      function renderGamesList() {
+        gamesList.innerHTML = '';
+
+        if (savedGames.length === 0) {
+          gamesList.innerHTML = `
+            <div class="empty-state">
+              <i class="fas fa-gamepad"></i>
+              <p>Нет созданных игр</p>
+            </div>`;
+          gamesListSection.classList.remove('visible');
+        } else {
+          gamesListSection.classList.add('visible');
+          savedGames.forEach((game, index) => {
+            const card = document.createElement('div');
+            card.className = 'saved-game-card';
+            card.innerHTML = `
+              <div class="saved-game-type">
+                <i class="fas ${gameTypeIcons[game.type] || 'fa-gamepad'}"></i> 
+                ${gameTypeLabels[game.type] || game.type}
+              </div>
+              <div class="saved-game-name">${game.name}</div>
+              <div class="saved-game-date">${game.date}</div>`;
+            card.addEventListener('click', function() {
+              showGameDetails(game);
+            });
+            gamesList.appendChild(card);
+          });
+        }
+      }
+
+      // Показать детали игры
+      function showGameDetails(game) {
+        const typeLabel = gameTypeLabels[game.type] || game.type;
+        const details = `
+🎮 Игра: «${game.name}»
+📁 Тип: ${typeLabel}
+👶 Возраст: ${game.age}
+📊 Сложность: ${game.difficulty}
+📝 Описание: ${game.description}
+📋 Содержание: ${game.content || 'Не указано'}
+📅 Создана: ${game.date}`;
+        alert(details);
+      }
+
+      // Сохранить игру
+      saveGameBtn.addEventListener('click', function() {
+        // Проверка заполнения
+        if (!gameType.value) {
+          showToast('Выберите тип игры');
+          return;
+        }
+        if (!gameName.value.trim()) {
+          showToast('Введите название игры');
+          return;
+        }
+        if (!gameAge.value) {
+          showToast('Выберите возрастную группу');
+          return;
+        }
+        if (!gameDifficulty.value) {
+          showToast('Выберите уровень сложности');
+          return;
+        }
+
+        const newGame = {
+          id: Date.now(),
+          type: gameType.value,
+          name: gameName.value.trim(),
+          age: gameAge.value === '6-8' ? '6–8 лет' : gameAge.value === '9-11' ? '9–11 лет' : '12–14 лет',
+          difficulty: gameDifficulty.value === 'easy' ? 'Лёгкий' : gameDifficulty.value === 'medium' ? 'Средний' : 'Сложный',
+          description: gameDescription.value.trim() || 'Без описания',
+          content: gameContent.value.trim() || 'Без содержания',
+          date: new Date().toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' })
+        };
+
+        savedGames.unshift(newGame);
+        localStorage.setItem('eduGames', JSON.stringify(savedGames));
+
+        // Очистить форму
+        gameType.value = '';
+        gameName.value = '';
+        gameAge.value = '';
+        gameDifficulty.value = '';
+        gameDescription.value = '';
+        gameContent.value = '';
+
+        // Обновить список
+        renderGamesList();
+
+        // Уведомление
+        showToast('✅ Игра «' + newGame.name + '» успешно сохранена!');
+      });
+
+      // Первоначальная отрисовка
+      renderGamesList();
+    })();
+  </script>
+</body>
+</html>
