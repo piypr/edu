@@ -9,435 +9,62 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background: #f0f2f5; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 0; margin: 0; }
+    .page-wrapper { width: 100%; max-width: 1400px; background: #ffffff; min-height: 100vh; display: flex; flex-direction: column; box-shadow: 0 0 40px rgba(0,0,0,0.05); margin: 0 auto; position: relative; }
+    .content-container { padding: 28px 36px 36px; display: flex; flex-direction: column; flex: 1; }
+    .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px; }
+    .page-title { font-size: 2.5rem; font-weight: 700; letter-spacing: -0.8px; color: #0b1b32; line-height: 1.2; }
+    .menu-wrapper { position: relative; }
+    .three-dots-btn { background: #f1f4f9; border: none; font-size: 1.8rem; color: #1e293b; cursor: pointer; width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; border-radius: 50%; transition: background 0.2s; line-height: 1; }
+    .three-dots-btn:hover { background: #e0e5ef; }
+    .dropdown-menu { position: absolute; right: 0; top: 58px; background: #ffffff; border-radius: 18px; box-shadow: 0 20px 35px rgba(0,0,0,0.08); min-width: 280px; padding: 8px 0; display: none; z-index: 20; border: 1px solid rgba(0,0,0,0.04); }
+    .dropdown-menu.visible { display: block; }
+    .menu-item { display: flex; align-items: center; gap: 14px; padding: 15px 20px; font-size: 0.98rem; font-weight: 500; color: #0f172a; cursor: pointer; transition: background 0.15s; white-space: nowrap; background: transparent; border: none; width: 100%; text-align: left; font-family: inherit; }
+    .menu-item i { width: 22px; font-size: 1.15rem; color: #2c3e50; text-align: center; }
+    .menu-item:hover { background: #f5f7fc; margin: 0 8px; width: calc(100% - 16px); border-radius: 10px; }
+    
+    /* Суб-меню первого уровня */
+    .submenu { position: absolute; right: 300px; top: 0; background: #ffffff; border-radius: 18px; box-shadow: 0 20px 35px rgba(0,0,0,0.1); min-width: 340px; max-height: 500px; overflow-y: auto; padding: 8px 0; display: none; z-index: 25; border: 1px solid rgba(0,0,0,0.04); }
+    .submenu.visible { display: block; }
+    .submenu-header { padding: 14px 20px 10px; font-weight: 650; font-size: 0.95rem; color: #0b1b32; border-bottom: 1px solid #edf2f7; margin-bottom: 4px; position: sticky; top: 0; background: #ffffff; z-index: 1; }
+    .submenu-item { display: flex; align-items: flex-start; gap: 10px; padding: 10px 20px; font-size: 0.88rem; color: #1e293b; cursor: pointer; transition: background 0.15s; background: transparent; border: none; width: 100%; text-align: left; font-family: inherit; line-height: 1.35; }
+    .submenu-item:hover { background: #f5f7fc; }
+    .submenu-item-number { font-weight: 700; color: #2563eb; min-width: 24px; }
+    .submenu-divider { border: none; border-top: 1px solid #edf2f7; margin: 4px 16px; }
+    
+    /* Суб-меню второго уровня (Фрагменты полное и Пупр) */
+    .submenu-level2 { position: absolute; right: 640px; top: 0; background: #ffffff; border-radius: 18px; box-shadow: 0 20px 35px rgba(0,0,0,0.12); min-width: 380px; max-height: 500px; overflow-y: auto; padding: 8px 0; display: none; z-index: 30; border: 1px solid rgba(0,0,0,0.04); }
+    .submenu-level2.visible { display: block; }
 
-    body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      background: #f0f2f5;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      padding: 0;
-      margin: 0;
-    }
-
-    .page-wrapper {
-      width: 100%;
-      max-width: 1400px;
-      background: #ffffff;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      box-shadow: 0 0 40px rgba(0, 0, 0, 0.05);
-      margin: 0 auto;
-      border-radius: 0;
-      position: relative;
-    }
-
-    .content-container {
-      padding: 28px 36px 36px;
-      display: flex;
-      flex-direction: column;
-      flex: 1;
-    }
-
-    .header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 32px;
-    }
-
-    .page-title {
-      font-size: 2.5rem;
-      font-weight: 700;
-      letter-spacing: -0.8px;
-      color: #0b1b32;
-      line-height: 1.2;
-    }
-
-    .menu-wrapper {
-      position: relative;
-    }
-
-    .three-dots-btn {
-      background: #f1f4f9;
-      border: none;
-      font-size: 1.8rem;
-      color: #1e293b;
-      cursor: pointer;
-      width: 48px;
-      height: 48px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 50%;
-      transition: background 0.2s;
-      line-height: 1;
-    }
-
-    .three-dots-btn:hover {
-      background: #e0e5ef;
-    }
-
-    .dropdown-menu {
-      position: absolute;
-      right: 0;
-      top: 58px;
-      background: #ffffff;
-      border-radius: 18px;
-      box-shadow: 0 20px 35px rgba(0, 0, 0, 0.08), 0 8px 16px rgba(0, 0, 0, 0.04);
-      min-width: 280px;
-      padding: 8px 0;
-      display: none;
-      z-index: 20;
-      border: 1px solid rgba(0, 0, 0, 0.04);
-    }
-
-    .dropdown-menu.visible {
-      display: block;
-    }
-
-    .menu-item {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      padding: 15px 20px;
-      font-size: 0.98rem;
-      font-weight: 500;
-      color: #0f172a;
-      cursor: pointer;
-      transition: background 0.15s;
-      white-space: nowrap;
-      background: transparent;
-      border: none;
-      width: 100%;
-      text-align: left;
-      font-family: inherit;
-    }
-
-    .menu-item i {
-      width: 22px;
-      font-size: 1.15rem;
-      color: #2c3e50;
-      text-align: center;
-    }
-
-    .menu-item:hover {
-      background: #f5f7fc;
-      margin: 0 8px;
-      width: calc(100% - 16px);
-      border-radius: 10px;
-    }
-
-    .cookies-submenu {
-      position: absolute;
-      left: -360px;
-      top: 0;
-      background: #ffffff;
-      border-radius: 18px;
-      box-shadow: 0 20px 35px rgba(0, 0, 0, 0.1), 0 8px 16px rgba(0, 0, 0, 0.05);
-      min-width: 340px;
-      max-height: 500px;
-      overflow-y: auto;
-      padding: 8px 0;
-      display: none;
-      z-index: 25;
-      border: 1px solid rgba(0, 0, 0, 0.04);
-    }
-
-    .cookies-submenu.visible {
-      display: block;
-    }
-
-    .cookies-header {
-      padding: 14px 20px 10px;
-      font-weight: 650;
-      font-size: 0.95rem;
-      color: #0b1b32;
-      border-bottom: 1px solid #edf2f7;
-      margin-bottom: 4px;
-      position: sticky;
-      top: 0;
-      background: #ffffff;
-      z-index: 1;
-    }
-
-    .cookie-topic {
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-      padding: 10px 20px;
-      font-size: 0.88rem;
-      color: #1e293b;
-      cursor: pointer;
-      transition: background 0.15s;
-      background: transparent;
-      border: none;
-      width: 100%;
-      text-align: left;
-      font-family: inherit;
-      line-height: 1.35;
-    }
-
-    .cookie-topic:hover {
-      background: #f5f7fc;
-    }
-
-    .cookie-topic-number {
-      font-weight: 700;
-      color: #2563eb;
-      min-width: 24px;
-    }
-
-    .cookie-topic-fragment {
-      font-weight: 600;
-      color: #0b1b32;
-    }
-
-    .cookies-divider {
-      border: none;
-      border-top: 1px solid #edf2f7;
-      margin: 4px 16px;
-    }
-
-    .modal-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(15, 23, 42, 0.6);
-      backdrop-filter: blur(6px);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 1000;
-      visibility: hidden;
-      opacity: 0;
-      transition: visibility 0.2s, opacity 0.25s ease;
-      padding: 20px;
-    }
-
-    .modal-overlay.active {
-      visibility: visible;
-      opacity: 1;
-    }
-
-    .modal-dialog {
-      background: #ffffff;
-      border-radius: 28px;
-      max-width: 750px;
-      width: 100%;
-      max-height: 85vh;
-      overflow-y: auto;
-      box-shadow: 0 30px 50px rgba(0, 0, 0, 0.2);
-      padding: 32px 30px 28px;
-      position: relative;
-      transform: translateY(10px);
-      transition: transform 0.25s ease;
-    }
-
-    .modal-overlay.active .modal-dialog {
-      transform: translateY(0);
-    }
-
-    .modal-quick-exit {
-      position: absolute;
-      top: 16px;
-      left: 20px;
-      background: #fee2e2;
-      border: none;
-      padding: 8px 16px;
-      border-radius: 20px;
-      font-size: 0.85rem;
-      font-weight: 600;
-      color: #991b1b;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      transition: background 0.2s;
-      font-family: inherit;
-      z-index: 5;
-    }
-
-    .modal-quick-exit:hover {
-      background: #fecaca;
-    }
-
-    .modal-close {
-      position: absolute;
-      top: 16px;
-      right: 20px;
-      background: #f1f4f9;
-      border: none;
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      font-size: 1.2rem;
-      color: #334155;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: background 0.2s;
-      z-index: 5;
-    }
-
-    .modal-close:hover {
-      background: #e2e8f0;
-    }
-
-    .modal-topic-title {
-      font-size: 1.3rem;
-      font-weight: 700;
-      color: #0b1b32;
-      margin-bottom: 18px;
-      margin-top: 10px;
-      padding-right: 40px;
-      line-height: 1.4;
-    }
-
-    .modal-body {
-      color: #1e293b;
-      font-size: 0.95rem;
-      line-height: 1.7;
-      white-space: pre-line;
-    }
-
-    .photo-gallery {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
-      margin: 12px 0 32px;
-      width: 100%;
-    }
-
-    .photo-card {
-      aspect-ratio: 4 / 3;
-      border-radius: 24px;
-      overflow: hidden;
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.06);
-      transition: transform 0.25s ease, box-shadow 0.25s;
-      background-color: #dce3eb;
-    }
-
-    .photo-card:hover {
-      transform: scale(1.02);
-      box-shadow: 0 16px 28px rgba(0, 0, 0, 0.1);
-    }
-
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15,23,42,0.6); backdrop-filter: blur(6px); display: flex; align-items: center; justify-content: center; z-index: 1000; visibility: hidden; opacity: 0; transition: visibility 0.2s, opacity 0.25s ease; padding: 20px; }
+    .modal-overlay.active { visibility: visible; opacity: 1; }
+    .modal-dialog { background: #ffffff; border-radius: 28px; max-width: 750px; width: 100%; max-height: 85vh; overflow-y: auto; box-shadow: 0 30px 50px rgba(0,0,0,0.2); padding: 32px 30px 28px; position: relative; transform: translateY(10px); transition: transform 0.25s ease; }
+    .modal-overlay.active .modal-dialog { transform: translateY(0); }
+    .modal-quick-exit { position: absolute; top: 16px; left: 20px; background: #fee2e2; border: none; padding: 8px 16px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; color: #991b1b; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: background 0.2s; font-family: inherit; z-index: 5; }
+    .modal-quick-exit:hover { background: #fecaca; }
+    .modal-close { position: absolute; top: 16px; right: 20px; background: #f1f4f9; border: none; width: 36px; height: 36px; border-radius: 50%; font-size: 1.2rem; color: #334155; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.2s; z-index: 5; }
+    .modal-close:hover { background: #e2e8f0; }
+    .modal-topic-title { font-size: 1.3rem; font-weight: 700; color: #0b1b32; margin-bottom: 18px; margin-top: 10px; padding-right: 40px; line-height: 1.4; }
+    .modal-body { color: #1e293b; font-size: 0.95rem; line-height: 1.7; white-space: pre-line; }
+    .photo-gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 12px 0 32px; width: 100%; }
+    .photo-card { aspect-ratio: 4/3; border-radius: 24px; overflow: hidden; background-size: cover; background-position: center; box-shadow: 0 8px 18px rgba(0,0,0,0.06); transition: transform 0.25s; background-color: #dce3eb; }
+    .photo-card:hover { transform: scale(1.02); }
     .photo1 { background-image: url('https://images.pexels.com/photos/4145153/pexels-photo-4145153.jpeg?auto=compress&cs=tinysrgb&w=800'); }
     .photo2 { background-image: url('https://images.pexels.com/photos/4145190/pexels-photo-4145190.jpeg?auto=compress&cs=tinysrgb&w=800'); }
     .photo3 { background-image: url('https://images.pexels.com/photos/4145354/pexels-photo-4145354.jpeg?auto=compress&cs=tinysrgb&w=800'); }
-
-    .games-section {
-      margin-top: auto;
-      display: flex;
-      flex-direction: column;
-      padding: 8px 0 4px;
-    }
-
-    .games-section-title {
-      font-size: 1.4rem;
-      font-weight: 650;
-      color: #0b1b32;
-      margin-bottom: 20px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      letter-spacing: -0.3px;
-    }
-
-    .games-section-title i {
-      color: #2563eb;
-      font-size: 1.5rem;
-    }
-
-    .games-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 16px;
-      width: 100%;
-    }
-
-    .game-card {
-      background: #f9fafc;
-      border: 1px solid #e2e8f0;
-      border-radius: 20px;
-      padding: 20px 18px 18px;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
-      text-align: left;
-      font-family: inherit;
-      color: inherit;
-      width: 100%;
-      text-decoration: none;
-    }
-
-    .game-card:hover {
-      background: #ffffff;
-      border-color: #cbd5e1;
-      box-shadow: 0 14px 26px rgba(0, 0, 0, 0.06);
-      transform: translateY(-2px);
-    }
-
-    .game-card:active {
-      transform: scale(0.98);
-      background: #f1f5f9;
-    }
-
-    .game-icon {
-      font-size: 1.9rem;
-      color: #0f2b4b;
-      margin-bottom: 6px;
-    }
-
-    .game-title {
-      font-weight: 650;
-      font-size: 1.05rem;
-      color: #0f172a;
-      line-height: 1.3;
-    }
-
-    .game-desc {
-      font-size: 0.85rem;
-      color: #475569;
-      line-height: 1.45;
-      font-weight: 400;
-    }
-
-    @media (max-width: 1024px) {
-      .content-container { padding: 24px 28px 32px; }
-      .page-title { font-size: 2.2rem; }
-      .cookies-submenu { left: auto; right: 0; }
-    }
-
-    @media (max-width: 768px) {
-      .photo-gallery { grid-template-columns: repeat(2, 1fr); }
-      .content-container { padding: 20px 20px 28px; }
-      .page-title { font-size: 1.9rem; }
-      .games-grid { grid-template-columns: 1fr 1fr; }
-      .cookies-submenu { left: auto; right: 0; min-width: 280px; }
-    }
-
-    @media (max-width: 500px) {
-      .photo-gallery { grid-template-columns: 1fr; }
-      .games-grid { grid-template-columns: 1fr; }
-    }
+    .games-section { margin-top: auto; display: flex; flex-direction: column; padding: 8px 0 4px; }
+    .games-section-title { font-size: 1.4rem; font-weight: 650; color: #0b1b32; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+    .games-section-title i { color: #2563eb; font-size: 1.5rem; }
+    .games-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; width: 100%; }
+    .game-card { background: #f9fafc; border: 1px solid #e2e8f0; border-radius: 20px; padding: 20px 18px 18px; cursor: pointer; transition: all 0.2s; display: flex; flex-direction: column; gap: 8px; text-align: left; font-family: inherit; color: inherit; width: 100%; text-decoration: none; }
+    .game-card:hover { background: #ffffff; border-color: #cbd5e1; box-shadow: 0 14px 26px rgba(0,0,0,0.06); transform: translateY(-2px); }
+    .game-icon { font-size: 1.9rem; color: #0f2b4b; margin-bottom: 6px; }
+    .game-title { font-weight: 650; font-size: 1.05rem; color: #0f172a; }
+    .game-desc { font-size: 0.85rem; color: #475569; line-height: 1.45; }
+    @media (max-width: 1024px) { .content-container { padding: 24px 28px 32px; } .page-title { font-size: 2.2rem; } .submenu { right: 0; } .submenu-level2 { right: 0; } }
+    @media (max-width: 768px) { .photo-gallery { grid-template-columns: repeat(2,1fr); } .content-container { padding: 20px; } .page-title { font-size: 1.9rem; } .games-grid { grid-template-columns: 1fr 1fr; } .submenu { right: 0; min-width: 280px; } .submenu-level2 { right: 0; min-width: 280px; } }
+    @media (max-width: 500px) { .photo-gallery { grid-template-columns: 1fr; } .games-grid { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
@@ -446,398 +73,215 @@
       <div class="header">
         <h1 class="page-title">Образовательная платформа</h1>
         <div class="menu-wrapper">
-          <button class="three-dots-btn" id="menuToggleBtn" aria-label="Меню">
-            <i class="fas fa-ellipsis-v"></i>
-          </button>
+          <button class="three-dots-btn" id="menuToggleBtn"><i class="fas fa-ellipsis-v"></i></button>
           <div class="dropdown-menu" id="dropdownMenu">
-            <button class="menu-item" id="privacyPolicyBtn">
-              <i class="fas fa-shield-alt"></i> Политика конфиденциальности
-            </button>
-            <button class="menu-item" id="contactUsBtn">
-              <i class="fas fa-envelope"></i> Связаться с нами
-            </button>
-            <button class="menu-item" id="aboutBtn">
-              <i class="fas fa-circle-info"></i> О платформе
-            </button>
-            <button class="menu-item" id="cookiesBtn">
-              <i class="fas fa-cookie-bite"></i> Файлы cookies
-            </button>
-            <div class="cookies-submenu" id="cookiesSubmenu">
-              <div class="cookies-header">Темы для говорения</div>
-            </div>
+            <button class="menu-item" id="privacyPolicyBtn"><i class="fas fa-shield-alt"></i> Политика конфиденциальности</button>
+            <button class="menu-item" id="contactUsBtn"><i class="fas fa-envelope"></i> Связаться с нами</button>
+            <button class="menu-item" id="aboutBtn"><i class="fas fa-circle-info"></i> О платформе</button>
+            <button class="menu-item" id="cookiesBtn"><i class="fas fa-cookie-bite"></i> Файлы cookies <i class="fas fa-chevron-right" style="margin-left:auto;font-size:0.8rem;color:#94a3b8;"></i></button>
+            <div class="submenu" id="cookiesSubmenu"><div class="submenu-header">Меню</div></div>
           </div>
         </div>
       </div>
-
       <div class="photo-gallery">
-        <div class="photo-card photo1" title="Ребёнок занимается за ноутбуком"></div>
-        <div class="photo-card photo2" title="Девочка на онлайн-уроке"></div>
-        <div class="photo-card photo3" title="Дети используют ноутбуки"></div>
+        <div class="photo-card photo1"></div>
+        <div class="photo-card photo2"></div>
+        <div class="photo-card photo3"></div>
       </div>
-
       <div class="games-section">
-        <div class="games-section-title">
-          <i class="fas fa-puzzle-piece"></i> Создать игру
-        </div>
+        <div class="games-section-title"><i class="fas fa-puzzle-piece"></i> Создать игру</div>
         <div class="games-grid">
-          <a href="create-game.html" class="game-card">
-            <span class="game-icon"><i class="fas fa-random"></i></span>
-            <span class="game-title">Анаграммы</span>
-            <span class="game-desc">Переставь буквы, чтобы получилось слово. Развивает словарный запас и логику.</span>
-          </a>
-          <a href="create-game.html" class="game-card">
-            <span class="game-icon"><i class="fas fa-magnifying-glass"></i></span>
-            <span class="game-title">Найди ошибку</span>
-            <span class="game-desc">В предложении спрятана грамматическая или смысловая ошибка. Найди и исправь.</span>
-          </a>
-          <a href="create-game.html" class="game-card">
-            <span class="game-icon"><i class="fas fa-book-open"></i></span>
-            <span class="game-title">Синонимы & Антонимы</span>
-            <span class="game-desc">Подбери пару к слову: синоним или антоним. Тренировка речи и памяти.</span>
-          </a>
-          <a href="create-game.html" class="game-card">
-            <span class="game-icon"><i class="fas fa-border-none"></i></span>
-            <span class="game-title">Что лишнее?</span>
-            <span class="game-desc">В ряду предметов или слов найди тот, что не подходит по смыслу.</span>
-          </a>
-          <a href="create-game.html" class="game-card">
-            <span class="game-icon"><i class="fas fa-pen-to-square"></i></span>
-            <span class="game-title">Собери предложение</span>
-            <span class="game-desc">Из перемешанных слов составь правильное предложение. Основы грамматики.</span>
-          </a>
+          <a href="create-game.html" class="game-card"><span class="game-icon"><i class="fas fa-random"></i></span><span class="game-title">Анаграммы</span><span class="game-desc">Переставь буквы, чтобы получилось слово.</span></a>
+          <a href="create-game.html" class="game-card"><span class="game-icon"><i class="fas fa-magnifying-glass"></i></span><span class="game-title">Найди ошибку</span><span class="game-desc">В предложении спрятана ошибка.</span></a>
+          <a href="create-game.html" class="game-card"><span class="game-icon"><i class="fas fa-book-open"></i></span><span class="game-title">Синонимы & Антонимы</span><span class="game-desc">Подбери пару к слову.</span></a>
+          <a href="create-game.html" class="game-card"><span class="game-icon"><i class="fas fa-border-none"></i></span><span class="game-title">Что лишнее?</span><span class="game-desc">Найди предмет не по смыслу.</span></a>
+          <a href="create-game.html" class="game-card"><span class="game-icon"><i class="fas fa-pen-to-square"></i></span><span class="game-title">Собери предложение</span><span class="game-desc">Составь предложение из слов.</span></a>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Модальные окна -->
-  <div class="modal-overlay" id="privacyModal">
-    <div class="modal-dialog">
-      <button class="modal-quick-exit" id="quickExitPrivacy"><i class="fas fa-sign-out-alt"></i> Быстро выйти</button>
-      <button class="modal-close" id="closePrivacyModal"><i class="fas fa-times"></i></button>
-      <div class="modal-topic-title">Политика конфиденциальности</div>
-      <div class="modal-body">
-        <p><strong>Дата последнего обновления:</strong> 1 июня 2026 года</p>
-        <p>Настоящая Политика конфиденциальности описывает, как Образовательная платформа собирает, использует, хранит и защищает персональные данные пользователей.</p>
-        <p><strong>1. Какие данные мы собираем</strong></p>
-        <p>Имя и фамилия, адрес электронной почты и номер телефона, данные об успеваемости и прогрессе в играх, техническая информация.</p>
-        <p><strong>2. Цели обработки</strong></p>
-        <p>Обеспечение работы сервисов, улучшение качества, отправка уведомлений, соблюдение законодательства РФ.</p>
-        <p><strong>3. Передача третьим лицам</strong></p>
-        <p>Не передаём, кроме случаев, предусмотренных законом.</p>
-        <p><strong>4. Хранение и безопасность</strong></p>
-        <p>Защищённые серверы на территории РФ, шифрование SSL/TLS.</p>
-        <p><strong>5. Ваши права</strong></p>
-        <p>Доступ, исправление, удаление данных, отзыв согласия.</p>
-      </div>
-    </div>
-  </div>
+  <div class="modal-overlay" id="privacyModal"><div class="modal-dialog"><button class="modal-quick-exit" id="quickExitPrivacy"><i class="fas fa-sign-out-alt"></i> Быстро выйти</button><button class="modal-close" id="closePrivacyModal"><i class="fas fa-times"></i></button><div class="modal-topic-title">Политика конфиденциальности</div><div class="modal-body"><p><strong>Дата обновления:</strong> 1 июня 2026 г.</p><p>Платформа собирает: имя, email, телефон, данные об успеваемости, IP-адрес. Цели: работа сервисов, улучшение качества, уведомления. Данные не передаются третьим лицам. Хранение на защищённых серверах РФ с шифрованием SSL/TLS. Ваши права: доступ, исправление, удаление, отзыв согласия.</p></div></div></div>
+  <div class="modal-overlay" id="contactModal"><div class="modal-dialog"><button class="modal-quick-exit" id="quickExitContact"><i class="fas fa-sign-out-alt"></i> Быстро выйти</button><button class="modal-close" id="closeContactModal"><i class="fas fa-times"></i></button><div class="modal-topic-title">Связаться с нами</div><div class="modal-body"><p><strong>Email:</strong> hello@eduplatform.ru</p><p><strong>Тел:</strong> +7 (495) 123-45-67</p><p><strong>Telegram:</strong> @eduplatform_support</p><p><strong>Адрес:</strong> Москва, ул. Образовательная, 10, оф. 305</p><p><strong>Часы:</strong> Пн–Пт 09:00–19:00</p><p>Горячая линия: 8-800-500-12-34</p></div></div></div>
+  <div class="modal-overlay" id="aboutModal"><div class="modal-dialog"><button class="modal-quick-exit" id="quickExitAbout"><i class="fas fa-sign-out-alt"></i> Быстро выйти</button><button class="modal-close" id="closeAboutModal"><i class="fas fa-times"></i></button><div class="modal-topic-title">О платформе</div><div class="modal-body"><p><strong>Образовательная платформа</strong> — пространство для детей 6–14 лет. Игры, персонализация, безопасность, статистика. 50 000+ учеников.</p></div></div></div>
+  <div class="modal-overlay" id="topicModal"><div class="modal-dialog"><button class="modal-quick-exit" id="quickExitTopic"><i class="fas fa-sign-out-alt"></i> Быстро выйти</button><button class="modal-close" id="closeTopicModal"><i class="fas fa-times"></i></button><div class="modal-topic-title" id="topicModalTitle"></div><div class="modal-body" id="topicModalBody"></div></div></div>
 
-  <div class="modal-overlay" id="contactModal">
-    <div class="modal-dialog">
-      <button class="modal-quick-exit" id="quickExitContact"><i class="fas fa-sign-out-alt"></i> Быстро выйти</button>
-      <button class="modal-close" id="closeContactModal"><i class="fas fa-times"></i></button>
-      <div class="modal-topic-title">Связаться с нами</div>
-      <div class="modal-body">
-        <p><strong>Email:</strong> hello@eduplatform.ru</p>
-        <p><strong>Телефон:</strong> +7 (495) 123-45-67</p>
-        <p><strong>Telegram:</strong> @eduplatform_support</p>
-        <p><strong>Адрес:</strong> г. Москва, ул. Образовательная, д. 10, офис 305</p>
-        <p><strong>Часы работы:</strong> Пн–Пт с 09:00 до 19:00 (МСК)</p>
-        <p>Горячая линия: 8-800-500-12-34</p>
-      </div>
-    </div>
-  </div>
-
-  <div class="modal-overlay" id="aboutModal">
-    <div class="modal-dialog">
-      <button class="modal-quick-exit" id="quickExitAbout"><i class="fas fa-sign-out-alt"></i> Быстро выйти</button>
-      <button class="modal-close" id="closeAboutModal"><i class="fas fa-times"></i></button>
-      <div class="modal-topic-title">О платформе</div>
-      <div class="modal-body">
-        <p><strong>Образовательная платформа</strong> — современное пространство для развития детей от 6 до 14 лет.</p>
-        <p>Интерактивные игры, персонализированное обучение, безопасная среда, статистика для родителей.</p>
-        <p>Уже более 50 000 детей учатся вместе с нами!</p>
-      </div>
-    </div>
-  </div>
-
-  <div class="modal-overlay" id="topicModal">
-    <div class="modal-dialog">
-      <button class="modal-quick-exit" id="quickExitTopic"><i class="fas fa-sign-out-alt"></i> Быстро выйти</button>
-      <button class="modal-close" id="closeTopicModal"><i class="fas fa-times"></i></button>
-      <div class="modal-topic-title" id="topicModalTitle"></div>
-      <div class="modal-body" id="topicModalBody"></div>
-    </div>
-  </div>
+  <!-- Суб-меню второго уровня: Фрагменты (полное) -->
+  <div class="submenu-level2" id="fragFullSubmenu"><div class="submenu-header">Фрагменты (полное)</div></div>
+  <!-- Суб-меню второго уровня: Пупр -->
+  <div class="submenu-level2" id="puprSubmenu"><div class="submenu-header">Пупр</div></div>
 
   <script>
     (function() {
-      // Текст для "Фрагментов"
-      const fragmentText = `1. Билет: Обучение иноязычному произношению (3 класс, Л.М., Лапицкая (1 часть), гласные звуки на выбор)
-· Гласный звук [æ]
-· «Repeat after me: cat, hat, black, happy. Now find the word with [æ]: bed – bad – bird».
-· Скороговорка: «A black cat sat on a mat and ate a fat rat».
-
-2. Билет: Обучение фонетике (3 класс, Л.М. Лапицкая (2 часть), интонация общих вопросов, с.12)
-· Интонация общего вопроса
-· «Listen and repeat with rising tone: Do you like milk? ↑ Is he a pupil? ↑»
-· Игра «Эхо»: учитель говорит утверждение, ученики переделывают в вопрос с повышением тона.
-
-3. Билет: Обучение фонетике (3 класс, Л.М. Лапицкая (1 часть), согласные звуки на выбор)
-· Согласный звук [θ]
-· «Repeat: three, thank, thumb, think. Show me your tongue!»
-· Скороговорка: «Three thin thieves thought a thousand thoughts».
-
-4. Билет: Обучение технике письма (3 класс, Л.М. Лапицкая (1 часть), три буквы на выбор)
-· Техника письма (буквы Aa, Bb, Cc)
-· «Trace the letters in your copybook. Write Aa three times – capital and small».
-· «Find the letter A among others: a, o, e, a, u».
-
-5. Билет: Обучение изучающему чтению (9 класс, Л.М. Лапицкая, с. 33-36)
-· Изучающее чтение (9 кл.)
-· «Read the text paragraph by paragraph. Find 5 key facts».
-· «Answer the detailed questions after the text (Who? When? Why?)».
-· «Make a plan of the text and retell it close to the original».
-
-6. Билет: Обучение ознакомительному чтению (9 класс, Л.М. Лапицкая, с. 42-45)
-· Ознакомительное чтение (9 кл.)
-· «Skim the text in 2 minutes. What is it about? Choose the best title».
-· «Match the headings to the paragraphs».
-· «Say 3 main ideas in one sentence each».
-
-7. Билет: Обучение поисковому чтению (9 класс, Л.М. Лапицкая, с. 18-22)
-· Поисковое чтение (9 кл.)
-· «Scan the text and find: all dates, names of people, and numbers».
-· «Fill in the table: Who did what?»
-· «Find sentences that describe the main character's appearance».
-
-8. Билет: Обучение технике чтения (4 класс, Л.М. Лапицкая (1 часть), с. 18-20)
-· Техника чтения (4 кл.)
-· «Read the words in columns: cat – cake, pig – pine».
-· «Read the sentences aloud with correct stress: "My mum likes to read."»
-· Чтение хором и по цепочке.
-
-9. Билет: Обучение аудированию с использованием подготовительных упражнений (7 класс, Н.В., Юхнель, с. 7-9)
-· Аудирование – подготовительные упр. (7 кл.)
-· «Look at the pictures and say what the text will be about».
-· «Match the new words with their definitions before listening».
-· «Repeat the key words after me: adventure, island, treasure».
-
-10. Билет: Обучение аудированию с использованием речевых упражнений на среднем этапе обучения (7 класс, Н.В., Юхнель, с. 12-14)
-· Аудирование – речевые упр. (средний этап)
-· «Listen to the dialogue and answer: Where are they? What do they want?»
-· «Listen again and complete the sentences with missing words».
-· «Act out a similar dialogue after listening».
-
-11. Билет: Обучение аудированию (предтекстовый и текстовый этапы) (7 класс, Н.В., Юхнель, с. 130-133)
-· Аудирование – предтекстовый + текстовый
-· До: «Look at the title. What do you know about this topic?»
-· «Listen for the first time and say if these statements are True/False».
-· «Listen again and put the pictures in the correct order».
-
-12. Билет: Обучение аудированию (текстовый и послетекстовый этапы) (7 класс, Н.В., Юхнель, с. 20-21)
-· Аудирование – текстовый + послетекстовый
-· «Listen again and fill in the chart with details».
-· После: «Discuss in pairs: Would you like to visit this place? Why?»
-· «Retell the story from the main character's point of view».
-
-13. Билет: Обучение иноязычной грамматике на начальном этапе обучения (4 класс, Л.М. Лапицкая (1 часть), с.11-14)
-· Грамматика – начальный этап (Present Simple)
-· «Look at the pictures and say what he does every day: He gets up at 7».
-· «Put the words in the correct order: does / Where / she / live?»
-· «Fill in: I ___ (play) tennis on Sundays».
-
-14. Билет: Обучение аудированию с использованием речевых (коммуникативных) упражнений на старшем этапе обучения (10 класс, Н.В., Юхнель, с. 16-20)
-· Аудирование – коммуникативные упр. (10 кл.)
-· «Listen to the interview and note the speaker's opinion on…»
-· «After listening, hold a mini-debate: Do you agree with the expert?»
-· «Role-play: one is a journalist, the other is the interviewee».
-
-15. Билет: Формирование рецептивного грамматического навыка (этап ознакомления и тренировки) (5 класс, 2 часть) Л.М. Лапицкая, с. 10-13)
-· Рецептивная грамматика (Past Simple – ознакомление)
-· «Read the sentences and underline all verbs in the past form».
-· «Match the verbs: go – went, see – saw».
-· «Find in the text all irregular verbs and write their infinitive».
-
-16. Билет: Обучение иноязычной грамматике (тренировка и применение) (5 класс, 1 часть) Л.М. Лапицкая, с. 7-11)
-· Грамматика – тренировка и применение (5 кл.)
-· «Change the sentences from Present to Past: I go to school → I went…»
-· «Make 5 questions about your weekend using Did».
-· «Tell your partner what you did yesterday».
-
-17. Билет: Обучение лексике (ознакомление с новым материалом и первичное закрепление лексики) (3 класс, 2 часть) Л.М. Лапицкая, с. 10-13)
-· Лексика – ознакомление + первичное закрепление
-· «Look at the pictures and repeat new words: apple, banana, orange».
-· «Match the word to the picture».
-· «Complete the sentence: I like to eat ___».
-
-18. Билет: Обучение лексике (первичное закрепление лексики и тренировка (автоматизация) лексических единиц) (4 класс, 1 часть) Л.М. Лапицкая, с. 36-39)
-· Лексика – закрепление + автоматизация (4 кл.)
-· «Fill in the missing word: I have a ___ for breakfast».
-· «Make up 3 sentences with new words».
-· «Ask your friend: Do you like apples? – Yes, I do / No, I don't».
-
-19. Билет: Обучение лексике (тренировка (автоматизация) лексических единиц и активизация лексических единиц в речевой деятельности) (4 класс, 2 часть) Л.М. Лапицкая, с. 19-22)
-· Тренировка + активизация лексики (4 кл.)
-· «Complete the sentences using the new words».
-· «Make a dialogue in pairs about your favourite food».
-· «Tell the class what you usually have for breakfast».
-
-20. Билет: Обучение иноязычной лексики с использованием подготовительных упражнений (упражнения в дифференциации и идентификации, упражнений в имитации) (4 класс, 1 часть) Л.М. Лапицкая, с. 8-11)
-· Дифференциация, идентификация, имитация
-· «Show me the card with "run", now "swim"».
-· «Repeat after me and clap the stressed syllable: computer, elephant».
-· «Choose the odd one out: apple, milk, banana, orange».
-
-21. Билет: Обучение иноязычной лексике с использованием подготовительных упражнений (упражнения на развитие словообразовательной и контекстуальной догадки) (3 класс, 2 часть) Л.М. Лапицкая, с. 15-19)
-· Словообразовательная / контекстуальная догадка (3 кл.)
-· «Look at the word "unhappy". What does "un-" mean?»
-· «Read the sentence: "The boy was very tired. He couldn't walk." Guess "tired"».
-· «Match the words with the same root: play – player – playing».
-
-22. Билет: Обучение иноязычной лексике с использованием подготовительных упражнений (упражнения для обучения прогнозированию на уровне слов, словосочетаний и предложений) (11 класс, Н.В. Юхнель, с. 4-7)
-· Прогнозирование (слова, словосочетания, предложения)
-· «Look at the title "A Trip to London". What words will be in the text?»
-· «Complete the phrase: a cup of ___».
-· «Read the first sentence and guess the end of the story».
-
-23. Билет: Обучение иноязычной лексики с использованием подготовительных упражнений (упражнения в расширении и сокращении структур, упражнения в эквивалентных заменах, упражнения в расширении ассоциативных связей) (6 класс, Н.В. Юхнель, с. 37-40)
-· Расширение/сокращение, замены, ассоциации (6 кл.)
-· «Expand the sentence: He went home. → He went home quickly yesterday».
-· «Replace "good" with a stronger word: excellent, wonderful».
-· «Write 5 words associated with "school"».
-
-24. Билет: Обучение диалогической речи (пошаговое обучение) (3 класс, 2 часть) Л.М. Лапицкая, с. 96-99)
-· Диалогическая речь – пошагово (3 кл.)
-· Шаг 1: «Repeat the question: "What's your name?"»
-· Шаг 2: «Answer: "My name is…"»
-· Шаг 3: «Ask and answer with a partner».
-
-25. Билет: Обучение диалогической речи на основе диалога образца (5 класс, Л.М. Лапицкая (2 часть), с. 127-130)
-· Диалог по образцу (5 кл.)
-· «Read the dialogue in pairs».
-· «Change the highlighted words (food names) to make your own dialogue».
-· «Act out your new dialogue for the class».
-
-26. Билет: Обучение монологической речи (пошаговое обучение) (7 класс, Н.В. Юхнель, с. 172)
-· Монологическая речь – пошагово (7 кл.)
-· Шаг 1: «Write down 5 key words about your hobby».
-· Шаг 2: «Make 5 sentences with them».
-· Шаг 3: «Connect the sentences into a story. Tell it aloud».
-
-27. Билет: Обучение монологической речи (на основе образца) (5 класс, Л.М. Лапицкая (2 часть), с. 75)
-· Монолог по образцу (5 кл.)
-· «Read the model text about a pet».
-· «Replace the pet's name, colour and age with your own».
-· «Tell your description to a partner».
-
-28. Билет: Обучение чтению (предтекстовый и текстовый этап) (11 класс, Н.В. Юхнель, с. 7-10)
-· Чтение – предтекст + текстовый (11 кл.)
-· До: «Look at the graphs and the title. What is the text about?»
-· «Read the text and match each paragraph to its main idea».
-· «Answer global questions: What is the author's position?»
-
-29. Билет: Обучение чтению (текстовый и послетекстовый этап) (11 класс, Н.В. Юхнель, с. 29-32)
-· Чтение – текстовый + послетекстовый (11 кл.)
-· «Read again and find arguments for and against».
-· «Fill in the table: Pros / Cons».
-· После: «Hold a debate or write a short summary».
-
-30. Билет: Фрагмент нестандартного урока (7 класс, Н.В. Юхнель, с. 268-270)
-· Нестандартный урок (7 кл.)
-· «Divide into groups. Each group makes a poster about the topic».
-· «Play a quiz show: teams answer questions for points».
-· «Role-play: a TV interview with a famous person» (по теме)`;
+      const fragments = [
+        { number: 1, title: "Обучение иноязычному произношению", text: "Составьте фрагмент урока по обучению иноязычному произношению (3 класс, Л.М., Лапицкая (1 часть), гласные звуки на выбор).\n\nКласс: 3\nУМК: Л.М. Лапицкая и др. Английский язык. 3 класс. Часть 1. – Минск: Вышэйшая школа, 2023.\nСтраницы: с. 16, упр. 4 (Letter secrets)\nТема: Звук [aɪ] в буквосочетаниях \"i_e\" и \"ie\" (ice, nice, like)\nВремя: 6 минут\nЭтап: Presentation + Practice\n\nУчитель пишет на доске: ice, nice, like.\nУчитель: \"Open your books at page 16. Look at exercise 4. Listen to me: [aɪs], [naɪs], [laɪk]. What sound do you hear in all these words?\"\nУченики: \"[aɪ]!\"\nУчитель: \"Right! This is the sound [aɪ]. Listen and repeat after me: [aɪ], [aɪ], ice, nice, like. Look at the letters. What letters make this sound?\"\nУченики: \"I and E! 'i_e'!\"\nУчитель: \"Good! Now let's read the phrases from exercise 4: I like ice. It's nice. Repeat after me.\"\nУченики: (Повторяют хором и по одному): \"[aɪ] I like ice. It's nice.\"" },
+        { number: 2, title: "Обучение фонетике (интонация общих вопросов)", text: "Составьте фрагмент урока по обучению фонетике (3 класс, Л.М. Лапицкая (2 часть), интонация общих вопросов, с.12).\n\nКласс: 3\nУМК: Л.М. Лапицкая и др. Английский язык. 3 класс. Часть 2. – Минск: Вышэйшая школа, 2023.\nСтраницы: с. 12, упр. 3b, 4\nТема: Восходящий тон в общих вопросах (Do you like...?)\nВремя: 6 минут\nЭтап: Presentation + Practice\n\nУчитель пишет на доске: Do you like carrots? ↗\nУчитель: \"Open your books at page 12. Look at exercise 3b. This is a question. 'Do you like carrots?' Listen to my voice. When I ask this question, my voice goes UP at the end. Watch my hand – it goes up like this. Repeat after me with your hand: Do you like carrots? ↗\"\nУченики: (Хором, поднимают руки): \"Do you like carrots? ↗\"\nУчитель: \"Now look at exercise 4 on page 12. Let's play 'A guessing game'. Ask your classmate: Do you like tomatoes? Do you like apples? Remember – your voice and your hand go UP!\"\nУченики: (В парах задают друг другу вопросы с восходящей интонацией): \"Do you like tomatoes? ↗\", \"Do you like apples? ↗\"" },
+        { number: 3, title: "Обучение фонетике (согласные звуки)", text: "Составьте фрагмент урока по обучению фонетике (3 класс, Л.М. Лапицкая (1 часть), согласные звуки на выбор).\n\nКласс: 3\nУМК: Л.М. Лапицкая и др. Английский язык. 3 класс. Часть 1. – Минск: Вышэйшая школа, 2023.\nСтраницы: с. 16, упр. 4 (Letter secrets)\nТема: Звуки [k] и [s] в букве Cc (cakes, coffee, can, climb, cook / ice, nice)\nВремя: 6 минут\nЭтап: Presentation + Practice\n\nУчитель пишет на доске: Cakes and coffee can climb the cook. I like ice. It's nice.\nУчитель: \"Open your books at page 16. Look at exercise 4. We will practice two sounds for the letter Cc. Listen: [k] – cakes, coffee, can, climb, cook. Now repeat after me: [k], [k], cakes, coffee.\"\nУченики: (Повторяют хором): \"[k], [k], cakes, coffee\".\nУчитель: \"Now listen to the next sound: [s] – ice, nice. Repeat after me: [s], [s], ice, nice.\"\nУченики: (Повторяют): \"[s], [s], ice, nice\".\nУчитель: \"Now look at the words and guess: When does Cc sound like [k]? When does it sound like [s]?\"\nУченики: \"Before a, o, u – [k]; before e, i, y – [s].\"" },
+        { number: 4, title: "Обучение технике письма", text: "Составьте фрагмент урока по обучению технике письма (3 класс, Л.М. Лапицкая (1 часть), три буквы на выбор).\n\nКласс: 3\nУМК: Л.М. Лапицкая и др. Английский язык. 3 класс. Часть 1. – Минск: Вышэйшая школа, 2023.\nСтраницы: с. 13, упр. 6 (Learn to write letters)\nТема: Написание прописных и строчных букв Aa, Bb, Cc\nВремя: 7 минут\nЭтап: Presentation + Practice\n\nУчитель пишет на доске: A a B b C c\nУчитель: \"Open your books at page 13, exercise 6. Today we will learn to write three letters. Watch me on the board. This is A. I start at the top, go down to the left, then up and down to the right, and across in the middle – A. The small letter is a – start with a circle, go all the way round and back to the start, then add a straight line down on the right – a. Now you write A in the air with your pencil. Ready? Up, down, across. Small a – circle and stick. Good! Now open your copybooks. Write one line of capital A and one line of small a.\"\n(Аналогично учитель показывает написание Bb и Cc из упражнения 6 на странице 13)." },
+        { number: 5, title: "Обучение изучающему чтению", text: "Составьте фрагмент урока по обучению изучающему чтению (9 класс, Л.М. Лапицкая, с. 33-36).\n\nКласс: 9\nУМК: Л.М. Лапицкая и др. Английский язык. 9 класс. – Минск: Вышэйшая школа, 2018.\nСтраницы: с. 33-36, упр. 1a, 1b, 2a\nТема: Дружба (мнения подростков на интернет-форуме)\nВремя: 7 минут\nЭтап: Pre-reading + While-reading\n\nУчитель: \"Open your books at page 33. Look at the title of Lesson 2: 'Friendship is... '. Read the proverbs in exercise 1a. Match the two parts of the proverbs.\"\nУченики: (Выполняют задание): \"1-b, 2-f, 3-a, 4-e, 5-c, 6-d.\"\nУчитель: \"Now let's do exercise 1b on page 33. What do the proverbs have in common? Do you agree with them? Which one do you like best?\"\nУченики: (Обсуждают пословицы): \"They are all about friendship. I like the proverb 'A friend in need is a friend indeed'.\"\nУчитель: \"Now let's read the texts on pages 34-35. These are opinions from an Internet forum. Read them carefully and find the opposite expressions to the words given in exercise 2a on page 35.\"\nУченики: (Читают тексты, выполняют задания)." },
+        { number: 6, title: "Обучение ознакомительному чтению", text: "Составьте фрагмент урока по обучению ознакомительному чтению (9 класс, Л.М. Лапицкая, с. 42-45).\n\nКласс: 9\nУМК: Л.М. Лапицкая и др. Английский язык. 9 класс. – Минск: Вышэйшая школа, 2018.\nСтраницы: с. 42-45, упр. 1, 2a\nТема: Главный секрет настоящей дружбы (Lesson 5)\nВремя: 6 минут\nЭтап: Pre-reading + While-reading\n\nУчитель: \"Open your books at page 42. Look at the title of Lesson 5: 'The main secret of a true friendship'. What do you think this lesson is about?\"\nУченики: \"I think it's about what makes a true friendship. Maybe it's about the qualities of a good friend.\"\nУчитель: \"Now let's do exercise 1 on page 42. What sort of person is your friend?\"\nУченики: (Обсуждают качества друзей).\nУчитель: \"Now do exercise 2a on page 42. Interview your classmate about his/her friend. Study the information below.\"\nУченики: (Изучают информацию): \"What does he look like? – it is a question about his appearance. What is he like? – it is a question about his character.\"\nУчитель: \"Now read the text on pages 42-43 quickly. Don't read every word. Just find the main idea: What is the main secret of a true friendship? You have 2 minutes.\"" },
+        { number: 7, title: "Обучение поисковому чтению", text: "Составьте фрагмент урока по обучению поисковому чтению (9 класс, Л.М. Лапицкая, с. 18-22).\n\nКласс: 9\nУМК: Л.М. Лапицкая и др. Английский язык. 9 класс. – Минск: Вышэйшая школа, 2018.\nСтраницы: с. 18-22, упр. 1, 2a\nТема: Как решать семейные проблемы (Lesson 6)\nВремя: 6 минут\nЭтап: Pre-reading + While-reading\n\nУчитель: \"Open your books at page 18. Look at the title of Lesson 6: 'How to work through family problems'. Today we will read about family problems and how to solve them.\"\nУчитель: \"First, let's do exercise 1 on page 18. Do you get along with your parents? Is it easy to be a close-knit family?\"\nУченики: (Обсуждают вопросы).\nУчитель пишет на доске: What is a close-knit family? What causes misunderstandings in a family?\nУчитель: \"Now read the text on pages 19-21 quickly. Your task is to find specific information. Find out the answers to the questions on the board. You don't need to read everything. Just scan for the answers. You have 2 minutes.\"\nУченики: (Просматривают текст, находят информацию)." },
+        { number: 8, title: "Обучение технике чтения", text: "Составьте фрагмент урока по обучению технике чтения (4 класс, Л.М. Лапицкая (1 часть), с. 18-20).\n\nКласс: 4\nУМК: Л.М. Лапицкая и др. Английский язык. 4 класс. Часть 1. – Минск: Вышэйшая школа, 2024.\nСтраницы: с. 18-20, упр. 1a, 1b\nТема: Чтение Oo в закрытом ([ɒ]) и открытом ([əʊ]) слогах\nВремя: 6 минут\nЭтап: Presentation + Practice\n\nУчитель пишет на доске: not, dog, hot и no, go, home\nУчитель: \"Open your books at page 18. Look at the board. I have two columns. How do we read the letter 'Oo'? Why is it different? Who can see the rule?\"\nУченики: \"In the first column, 'O' is followed by a consonant, so we read [ɒ]. In the second column, 'O' is at the end or before a vowel, so we read [əʊ].\"\nУчитель: \"Right! Now let's do exercise 1a on page 18. First, I read, you repeat. Then you read alone. Now do exercise 1b on page 19: read and match the words with the pictures.\"" },
+        { number: 9, title: "Обучение аудированию (подготовительные упражнения)", text: "Составьте фрагмент урока по обучению аудированию с использованием подготовительных упражнений (7 класс, Н.В., Юхнель, с. 7-9).\n\nКласс: 7\nУМК: Н.В. Юхнель и др. Английский язык. 7 класс. – Минск: Вышэйшая школа, 2023.\nСтраницы: с. 7-9, упр. 1a, 1b, 3a\nТема: Внешность и возраст (описание Гэндальфа)\nВремя: 7 минут\nЭтап: Pre-listening + While-listening\n\nУчитель: \"Open your books at page 7. Look at the title of Lesson 2: 'How old is \"old\"? '. Today we will learn to describe people's appearance. First, let's do exercise 1a on page 7. Order the words from the youngest to the oldest.\"\nУченики: (Выполняют задание): \"young, in his mid-twenties, in his late twenties, middle-aged, elderly, old.\"\nУчитель: \"Now let's practice the new words from exercise 3a on page 8. Look at the picture of Gandalf. Match the parts of the face to the numbers. Repeat the words after me: a beard, cheeks, eyebrows, a forehead, lips, a moustache, wrinkles.\"\nУченики: (Повторяют слова, выполняют задание)." },
+        { number: 10, title: "Обучение аудированию (речевые упражнения, средний этап)", text: "Составьте фрагмент урока по обучению аудированию с использованием речевых упражнений на среднем этапе обучения (7 класс, Н.В., Юхнель, с. 12-14).\n\nКласс: 7\nУМК: Н.В. Юхнель и др. Английский язык. 7 класс. – Минск: Вышэйшая школа, 2023.\nСтраницы: с. 12-14, упр. 3a, 3b\nТема: Описание внешности (история о Тине)\nВремя: 7 минут\nЭтап: Pre-listening + While-listening\n\nУчитель: \"Open your books at page 12. Look at the title of Lesson 4: 'Changeable Tina'. We are going to listen to a story about Tina. First, look at the picture dictionary on page 12. What hairstyles can you see?\"\nУченики: \"I can see blond wavy hair, red curly hair, a ponytail, a fringe, shoulder-length hair.\"\nУчитель: \"Now read the beginning of the story in exercise 3a on page 12. What did Tina decide to do?\"\nУченики: \"She decided to change her appearance.\"\nУчитель: \"Now listen to the story in exercise 3b on page 13. After listening, answer: How did the story end? What should Tina do now?\"" },
+        { number: 11, title: "Обучение аудированию (предтекстовый и текстовый этапы)", text: "Составьте фрагмент урока по обучению аудированию (предтекстовый и текстовый этапы) (7 класс, Н.В., Юхнель, с. 130-133).\n\nКласс: 7\nУМК: Н.В. Юхнель и др. Английский язык. 7 класс. – Минск: Вышэйшая школа, 2023.\nСтраницы: с. 130-133, упр. 1, 2a\nТема: Национальные виды спорта\nВремя: 6 минут\nЭтап: Pre-listening + While-listening\n\nУчитель: \"Open your books at page 130. Look at the title of Lesson 7: 'National sport'. What do you think this lesson is about?\"\nУченики: \"It's about sports. About popular sports in Belarus and the UK.\"\nУчитель: \"Look at the photos in exercise 1 on page 130. Where were these photographs taken?\"\nУченики: \"In Belarus. At a sports event.\"\nУчитель: \"Now let's do exercise 2a on page 130. Read the article about sports in the UK. Were you right in ex. 1?\"\nУченики: (Читают текст, отвечают на вопросы)." },
+        { number: 12, title: "Обучение аудированию (текстовый и послетекстовый этапы)", text: "Составьте фрагмент урока по обучению аудированию (текстовый и послетекстовый этапы) (7 класс, Н.В., Юхнель, с. 20-21).\n\nКласс: 7\nУМК: Н.В. Юхнель и др. Английский язык. 7 класс. – Минск: Вышэйшая школа, 2023.\nСтраницы: с. 20-21, упр. 5a, 5b\nТема: Описание внешности (игра-угадайка)\nВремя: 6 минут\nЭтап: Practice\n\nУчитель: \"Open your books at page 20. Look at exercise 5a. We are going to practice describing people. First, let's match the questions to the answers.\"\nУченики: (Выполняют задание, читают диалог в парах).\nУчитель: \"Now let's play the question game from exercise 5b on page 21. Student A: Think of a famous character or a celebrity. Student B: Ask questions about appearance to guess the character or a celebrity.\"\nУченик 1: \"Is it a man or a woman?\"\nУченик 2: \"It's a man.\"\nУченик 1: \"How old is he?\"\nУченик 2: \"He's in his mid-30s.\"\nУченик 1: \"Has he got a moustache or a beard?\"\nУченик 2: \"He's got a beard.\"\nУченик 1: \"Is it Thor?\"\nУченик 2: \"Yes, you are right!\"" },
+        { number: 13, title: "Обучение иноязычной грамматике на начальном этапе", text: "Составьте фрагмент урока по обучению иноязычной грамматике на начальном этапе обучения (4 класс, Л.М. Лапицкая (1 часть), с.11-14).\n\nКласс: 4\nУМК: Л.М. Лапицкая и др. Английский язык. 4 класс. Часть 1. – Минск: Вышэйшая школа, 2024.\nСтраницы: с. 11-14, упр. 1a, 1b\nТема: Спряжение глагола have got\nВремя: 6 минут\nЭтап: Presentation + Practice\n\nУчитель пишет на доске: I have got, You have got, He has got, She has got\nУчитель: \"Open your books at page 11. Look at me. I have got a book. I have got a pen. You have got a bag. Now look at the board. When do we use 'has'?\"\nУченики: \"With he, she, it.\"\nУчитель: \"Correct! Now do exercise 1a on page 11: listen and repeat. Now look at the pictures in exercise 1b on page 12 and say: What has she got?\"\nУченики: \"She has got a book. She has got a bag.\"\nУчитель: \"What has he got?\"\nУченики: \"He has got a cat. He has got a pen.\"" },
+        { number: 14, title: "Обучение аудированию (коммуникативные упражнения, старший этап)", text: "Составьте фрагмент урока по обучению аудированию с использованием речевых (коммуникативных) упражнений на старшем этапе обучения. (10 класс, Н.В., Юхнель, с. 16-20).\n\nКласс: 10\nУМК: Н.В. Юхнель и др. Английский язык. 10 класс. – Минск: Вышэйшая школа, 2019.\nСтраницы: с. 16-20, упр. 2b, 3\nТема: Выбор профессии (дискуссия)\nВремя: 7 минут\nЭтап: Pre-listening + While-listening\n\nУчитель: \"Open your books at page 16. Look at the title of Lesson 4: 'A debate on houses'. Today we'll prepare for a debate. The topic is: Is it better to live in a period or a modern house?\"\nУчитель: \"Listen to the recording (exercise 2c on page 16). It will help you with the pronunciation of some useful words. Now, let's work in two groups. One group will be for period houses, the other – for modern houses. Look at the text of the forum in Lesson 3 on page 12-13 again. Find arguments for your position. Make notes.\"\nУченики: (Работают в группах, собирают аргументы)." },
+        { number: 15, title: "Формирование рецептивного грамматического навыка", text: "Составьте фрагмент урока по формированию рецептивного грамматического навыка (этап ознакомления и тренировки) (5 класс, 2 часть) Л.М. Лапицкая, с. 10-13).\n\nКласс: 5\nУМК: Л.М. Лапицкая и др. Английский язык. 5 класс. Часть 2. – Минск: Вышэйшая школа, 2020.\nСтраницы: с. 10-13, упр. 3a, 3b\nТема: Узнавание конструкции to be going to в тексте\nВремя: 6 минут\nЭтап: Presentation + Practice\n\nУчитель пишет на доске: She is going to visit her grandmother.\nУчитель: \"Open your books at page 10. Look at the title of Lesson 2: 'Meals in Britain'. We are going to read a text about Nikita's family meals. Look at the board. This is the structure for future plans. Now read the text about Nikita's family meals on pages 10-11. Find all sentences with 'to be going to'. Underline them with your pencil.\"\nУченики: (Читают текст, находят предложения с конструкцией)." },
+        { number: 16, title: "Обучение иноязычной грамматике (тренировка и применение)", text: "Составьте фрагмент урока по обучению иноязычной грамматике (тренировка и применение) (5 класс, 1 часть) Л.М. Лапицкая, с. 7-11).\n\nКласс: 5\nУМК: Л.М. Лапицкая и др. Английский язык. 5 класс. Часть 1. – Минск: Вышэйшая школа, 2020.\nСтраницы: с. 7-11, упр. 3a, 3b\nТема: Образование Past Simple (правильные и неправильные глаголы)\nВремя: 6 минут\nЭтап: Presentation + Practice\n\nУчитель пишет на доске: I get up at 7. → I got up at 7.\nУчитель: \"Open your books at page 7, Lesson 2 'I remember my summer'. Look at the board. We change the verb. For regular verbs we add -ed. Now do exercise 3a on page 8: match the dates to the pictures. Where was Nikita on those days?\"\nУченики: \"On 31 August he was at home. On 25 August he was at the seaside.\"\nУчитель: \"Now do exercise 4 on page 9: play the 'I remember' game. Where were you yesterday / last week / last month?\"\nУченики: (Играют в игру, используя Past Simple): \"I was at school yesterday. I was in the country last month.\"" },
+        { number: 17, title: "Обучение лексике (ознакомление и первичное закрепление)", text: "Составьте фрагмент урока по обучению лексике (ознакомление с новым материалом и первичное закрепление лексики) (3 класс, 2 часть) Л.М. Лапицкая, с. 10-13).\n\nКласс: 3\nУМК: Л.М. Лапицкая и др. Английский язык. 3 класс. Часть 2. – Минск: Вышэйшая школа, 2023.\nСтраницы: с. 10, упр. 1 (Picture dictionary); с. 11, упр. 5a\nТема: Продукты питания (apple, bread, milk, juice, tea, coffee, pizza, meat, fish)\nВремя: 6 минут\nЭтап: Presentation + Practice\n\nУчитель: \"Open your books at page 10. Look at exercise 1. This is a picture dictionary. We will learn new words about food. Look at the board. Apple (яблоко), bread (хлеб), milk (молоко), juice (сок), tea (чай), coffee (кофе), pizza (пицца), meat (мясо), fish (рыба). Repeat after me.\"\nУченики: (Повторяют слова хором и по одному).\nУчитель: \"Now do exercise 1a: listen, point and repeat. Now let's do exercise 5a on page 11. Speak about you: I like juice. I don't like coffee.\"\nУченики: (Составляют предложения): \"I like pizza. I don't like fish.\"" },
+        { number: 18, title: "Обучение лексике (закрепление и автоматизация)", text: "Составьте фрагмент урока по обучению лексике (первичное закрепление лексики и тренировка (автоматизация) лексических единиц) (4 класс, 1 часть) Л.М. Лапицкая, с. 36-39).\n\nКласс: 4\nУМК: Л.М. Лапицкая и др. Английский язык. 4 класс. Часть 1. – Минск: Вышэйшая школа, 2024.\nСтраницы: с. 36-39, упр. 3a, 3b\nТема: Описание внешности\nВремя: 6 минут\nЭтап: Practice\n\nУчитель: \"Open your books at page 36, Lesson 9 'My friend'. Look at the picture. Describe her! What has she got?\"\nУченики: \"She has got long hair. She has got blue eyes. She has got a little nose.\"\nУчитель: \"Now work in pairs. Do exercise 3a on page 37: describe your friend to your partner. He/She must guess who it is.\"\nУченик 1: \"She has got short hair and brown eyes. She is tall. She is clever.\"\nУченик 2: \"Is it Masha?\"\nУченик 1: \"Yes, it is!\"" },
+        { number: 19, title: "Обучение лексике (автоматизация и активизация)", text: "Составьте фрагмент урока по обучению лексике (тренировка (автоматизация) лексических единиц и активизация лексических единиц в речевой деятельности) (4 класс, 2 часть) Л.М. Лапицкая, с. 19-22).\n\nКласс: 4\nУМК: Л.М. Лапицкая и др. Английский язык. 4 класс. Часть 2. – Минск: Вышэйшая школа, 2024.\nСтраницы: с. 19-22, упр. 1a, 2a\nТема: Одежда (I'm wearing...)\nВремя: 6 минут\nЭтап: Practice\n\nУчитель: \"Open your books at page 19, Unit 5 'Nastya's family and friends'. I say: 'I wear a...' and I name a part of my body. You finish the sentence. 'I wear a... on my head.' – What do you say?\"\nУченики: \"I wear a hat on my head.\"\nУчитель: \"'I wear ... on my feet.' – What do you say?\"\nУченики: \"I wear shoes on my feet.\"\nУчитель: \"Now do exercise 1a: listen and repeat. Then do exercise 2a on page 20: talk about your clothes. What are you wearing today?\"\nУченики: \"I am wearing a T-shirt and jeans today.\"" },
+        { number: 20, title: "Обучение лексике (дифференциация, идентификация, имитация)", text: "Составьте фрагмент урока по обучению иноязычной лексики с использованием подготовительных упражнений. (упражнения в дифференциации и идентификации, упражнений в имитации) (4 класс, 1 часть) Л.М. Лапицкая, с. 8-11).\n\nКласс: 4\nУМК: Л.М. Лапицкая и др. Английский язык. 4 класс. Часть 1. – Минск: Вышэйшая школа, 2024.\nСтраницы: с. 8-11, упр. 1a, 1b\nТема: Семья (mother, father, sister, brother)\nВремя: 6 минут\nЭтап: Presentation + Practice\n\nУчитель: \"Open your books at page 8, Lesson 2 'Mike's friends'. Listen to the words in exercise 1a. Raise your hand if you hear a word about 'Family'. mother – raise your hand!\"\nУченики: (Поднимают руки).\nУчитель: \"book – raise your hand if it's about family!\"\nУченики: (Не поднимают руки).\nУчитель: \"father – raise your hand! sister – raise your hand! Now repeat the words after me in exercise 1b. I say, you repeat. Then I point, you say the word.\"\nУченики: (Повторяют слова за учителем, затем называют слова по картинкам)." },
+        { number: 21, title: "Обучение лексике (словообразовательная и контекстуальная догадка)", text: "Составьте фрагмент урока по обучению иноязычной лексике с использованием подготовительных упражнений (упражнения на развитие словообразовательной и контекстуальной догадки) (3 класс, 2 часть) Л.М. Лапицкая, с. 15-19).\n\nКласс: 3\nУМК: Л.М. Лапицкая и др. Английский язык. 3 класс. Часть 2. – Минск: Вышэйшая школа, 2023.\nСтраницы: с. 16-19, упр. 4, 5a, 6\nТема: Догадка о значении слов по контексту и словообразованию\nВремя: 6 минут\nЭтап: Presentation + Practice\n\nУчитель: \"Open your books at page 16. Look at exercise 6. This is the sweet princess. She says: 'I like ... I don't like ...' Look at the words in the box: jelly, meat, sweets, pizza, tea, juice, jam, ice cream, hot dogs. What do these words mean? Look at the pictures on page 16 for help.\"\nУченики: \"Jelly is желе. Sweets are конфеты. Pizza is пицца.\"\nУчитель: \"Right! Now look at exercise 4 on page 16. Cakes, coffee, can, climb, cook, ice, nice. What do these words mean?\"\nУченики: \"We can guess from the pictures. Cakes are торты. Coffee is кофе.\"\nУчитель: \"Now let's do exercise 5a: speak about you.\"\nУченики: \"I like pizza. I don't like fish. I like ice cream. I don't like meat.\"" },
+        { number: 22, title: "Обучение лексике (прогнозирование)", text: "Составьте фрагмент урока по обучению иноязычной лексике с использованием подготовительных упражнений (упражнения для обучения прогнозированию на уровне слов, словосочетаний и предложений) (11 класс, Н.В. Юхнель, с. 4-7).\n\nКласс: 11\nУМК: Н.В. Юхнель и др. Английский язык. 11 класс. – Минск: Вышэйшая школа, 2021.\nСтраницы: с. 4-7, упр. 1, 2a\nТема: Семья (прогнозирование содержания по ключевым словам и коллокациям)\nВремя: 6 минут\nЭтап: Pre-reading\n\nУчитель: \"Open your books at page 4. Look at the title of Unit 1: 'Family'. What do you think this unit is about?\"\nУченики: \"I think it's about family relationships.\"\nУчитель: \"Now let's do exercise 1 on page 4. Discuss the questions in pairs: How did you spend your summer? Did you spend a lot of time with your family?\"\nУченики: (Обсуждают вопросы в парах).\nУчитель: \"Now let's do exercise 2a on page 4. Look at the collocations. What collocation is the definition below for? ... a family consisting of two parents and their children.\"\nУченики: \"Immediate family.\"" },
+        { number: 23, title: "Обучение лексике (расширение/сокращение, замены, ассоциации)", text: "Составьте фрагмент урока по обучению иноязычной лексики с использованием подготовительных упражнений (упражнения в расширении и сокращении структур, упражнения в эквивалентных заменах, упражнения в расширении ассоциативных связей) (6 класс, Н.В. Юхнель, с. 37-40).\n\nКласс: 6\nУМК: Н.В. Юхнель и др. Английский язык. 6 класс. – Минск: Адукацыя і выхаванне, 2021.\nСтраницы: с. 37-40, упр. 1, 2a, 2b\nТема: Природа и дикая природа Беларуси\nВремя: 7 минут\nЭтап: Presentation + Practice\n\nУчитель: \"Open your books at page 37. Play the team game. How many species of animals do you know?\"\nУченики: \"Wolves, foxes, bears, hares, deer, elks, bison...\"\nУчитель: \"Now look at exercise 2b on page 38. Match the phrases: wild animals — They do not live with people. endangered animals — They are in danger.\"\nУченики: (Выполняют задание)." },
+        { number: 24, title: "Обучение диалогической речи (пошаговое обучение)", text: "Составьте фрагмент урока по обучению диалогической речи (пошаговое обучение) (3 класс, 2 часть) Л.М. Лапицкая, с. 96-99).\n\nКласс: 3\nУМК: Л.М. Лапицкая и др. Английский язык. 3 класс. Часть 2. – Минск: Вышэйшая школа, 2023.\nСтраницы: с. 96-99, упр. 3a, 4\nТема: Диалог-расспрос о друге\nВремя: 6 минут\nЭтап: Presentation + Practice\n\nУчитель: \"Step 1: repeat after me – What's your name? How old are you?\"\nУченики: \"What's your name? How old are you?\"\nУчитель: \"Step 2: I ask, you answer.\"\nУченик: \"My name's Masha.\"\nУчитель: \"Step 3: now in pairs, do exercise 3a. Step 4: make your own dialogue.\"\nУченик 1: \"What's your name?\"\nУченик 2: \"My name's Dima. How old are you?\"\nУченик 1: \"I'm eight.\"" },
+        { number: 25, title: "Обучение диалогической речи (на основе образца)", text: "Составьте фрагмент урока по обучению диалогической речи на основе диалога образца (5 класс, Л.М. Лапицкая (2 часть), с. 127-130).\n\nКласс: 5\nУМК: Л.М. Лапицкая и др. Английский язык. 5 класс. Часть 2. – Минск: Вышэйшая школа, 2020.\nСтраницы: с. 127-130, упр. 1a, 1b\nТема: Диалог-расспрос о путешествии\nВремя: 6 минут\nЭтап: Presentation + Practice\n\nУчитель: \"Open page 127. Listen and read the dialogue. Now change some words using the box. Say the dialogue again.\"\nУченик 1: \"Where did you go?\"\nУченик 2: \"I went to India. What did you see there?\"\nУченик 1: \"I saw a very big monkey.\"" },
+        { number: 26, title: "Обучение монологической речи (пошаговое обучение)", text: "Составьте фрагмент урока по обучению монологической речи (пошаговое обучение) (7 класс, Н.В. Юхнель, с. 172).\n\nКласс: 7\nУМК: Н.В. Юхнель и др. Английский язык. 7 класс. – Минск: Вышэйшая школа, 2023.\nСтраницы: с. 172, упр. 2a, 2b\nТема: Описание известного человека (пошаговое обучение)\nВремя: 6 минут\nЭтап: Presentation + Practice\n\nУчитель: \"Step 1: look at the pictures. Step 2: read the text. Step 3: describe your family member. Use: identical, resemblance, to resemble, to take after.\"\nУченик: \"I take after my father. We have a strong resemblance. We both have blue eyes.\"" },
+        { number: 27, title: "Обучение монологической речи (на основе образца)", text: "Составьте фрагмент урока по обучению монологической речи (на основе образца) (5 класс, Л.М. Лапицкая (2 часть), с. 75).\n\nКласс: 5\nУМК: Л.М. Лапицкая и др. Английский язык. 5 класс. Часть 2. – Минск: Вышэйшая школа, 2020.\nСтраницы: с. 75, упр. 1a, 1b\nТема: Описание животного (по образцу)\nВремя: 6 минут\nЭтап: Presentation + Practice\n\nУчитель: \"Open page 75. Read the sample monologue about a cow. Now retell it. Imagine you are a farmer – tell the story.\"\nУченик: \"I am a farmer. I have a cow. She is black and white. She gives me milk every day.\"" },
+        { number: 28, title: "Обучение чтению (предтекстовый и текстовый этап)", text: "Составьте фрагмент урока по обучению чтению (предтекстовый и текстовый этап) (11 класс, Н.В. Юхнель, с. 7-10).\n\nКласс: 11\nУМК: Н.В. Юхнель и др. Английский язык. 11 класс. – Минск: Вышэйшая школа, 2021.\nСтраницы: с. 7-10, упр. 1a, 1b, 2a\nТема: Современные семьи\nВремя: 7 минут\nЭтап: Pre-reading + While-reading\n\nУчитель: \"Open page 7. What does the suffix -hood mean? Brotherhood, childhood, adulthood. Now describe the photographs. What is unusual about these families?\"\nУченики: \"One is a family with sextuplets, the other is a foster family.\"" },
+        { number: 29, title: "Обучение чтению (текстовый и послетекстовый этап)", text: "Составьте фрагмент урока по обучению чтению (текстовый и послетекстовый этап) (11 класс, Н.В. Юхнель, с. 29-32).\n\nКласс: 11\nУМК: Н.В. Юхнель и др. Английский язык. 11 класс. – Минск: Вышэйшая школа, 2021.\nСтраницы: с. 29-32, упр. 2a, 2b\nТема: Востребованные профессии\nВремя: 7 минут\nЭтап: While-reading + Post-reading\n\nУчитель: \"Open page 29. Read the article. What do the jobs have in common?\"\nУченики: \"They are all well-paid and in high demand.\"\nУчитель: \"Why are they a good choice for your future career?\"\nУченики: \"Job security, good pay, and benefits.\"" },
+        { number: 30, title: "Фрагмент нестандартного урока", text: "Составьте фрагмент нестандартного урока (7 класс, Н.В. Юхнель, с. 268-270).\n\nКласс: 7\nУМК: Н.В. Юхнель и др. Английский язык. 7 класс. – Минск: Вышэйшая школа, 2023.\nСтраницы: с. 254-258, Lesson 9 \"English in my life\"\nТема: «Английский в моей жизни» (дискуссия)\nВремя: 7 минут\nЭтап: Warming-up + Discussion\n\nУчитель: \"Open page 254. Listen to the poem. What is it about? Now let's do a quiz about English in exercise 2a on page 255. Work in pairs.\"\nУченики: (Выполняют викторину).\nУчитель: \"Discuss: Why is English important in your life?\"" }
+      ];
 
       const topics = [
-        { number: 1, title: "Speak on the role of family in people's life.", text: "Family is the most important thing in life. It's where we learn to love, solve problems, and become who we are. A good family gives us support and security. But if there are problems, it can be a source of pain. Traditional families were stricter, but now families come in many forms. Sadly, many families break apart, and children suffer from divorce.\nThe main job of a family is to teach us how to handle arguments. In a healthy family, people don't shout or insult each other. They talk calmly, respect each other, and find solutions together. Without these skills, relationships become cold, people hold grudges, and the family falls apart.\nFor children, family is an example to follow. When parents support each other, kids grow up confident and happy. In broken families, children often miss the parent who lives away. But if parents can cooperate, children can become stronger.\nI want a family where we can disagree respectfully, support each other, and laugh together. Not perfect, but loving and real." },
-        { number: 2, title: "Speak on responsibilities of men and women in a family.", text: "In the past, men and women had very different roles. Women did all the housework: dusting, vacuuming, ironing, cooking. They also took care of children. Men worked and earned money. They did repairs and fixed things. That's just how it was.\nNow everything has changed. Many women work too. Couples share expenses and chores. Men now can cook and do laundry. Women can fix things too. But there can still be problems when chores pile up and everyone is tired. When arguments happen, couples need to respect each other, not call names. They should support each other and share the load.\nChildren should also help at home. Young kids can tidy up and throw out rubbish. Older kids can cook and clean. Teenagers can do laundry and help with younger siblings. This way they learn important life skills and grow up responsible.\nIn the end, a family works best when everyone helps — men, women, and children. It doesn't matter who does what. What matters is that people support each other and work together." },
-        { number: 3, title: "Make up an everyday menu. Do you take care of healthy nutrition?", text: "Life is so busy now that people don't have time to cook. They buy ready-made food, which is often unhealthy. Shops sell food with artificial sweeteners, chemical additives, and flavour enhancers. Food high in sugar is bad for teeth and body. Fatty food causes heart disease. To be healthy, we need fibre, carbohydrates, water, minerals, and vitamins.\nDay 1\nBreakfast: Oatmeal with strawberries and blueberries, skimmed milk, green tea.\nLunch: Grilled salmon with salad of lettuce, tomatoes, cucumbers, bell peppers.\nDinner: Roast chicken with potatoes and broccoli. Fruit salad for dessert.\nDay 2\nBreakfast: Scrambled eggs with spinach and mushrooms, rye bread, orange juice.\nLunch: Quinoa salad with shrimps, avocado, tomatoes, and herbs.\nDinner: Beef steak with mashed potatoes and green beans. Baked apple for dessert.\nDay 3\nBreakfast: Fruit smoothie with banana, strawberries, yoghurt, honey. Nuts on the side.\nLunch: Vegetable soup with lentils and carrots. Whole grain bun.\nDinner: Baked cod with new potatoes, Brussels sprouts, carrots. Fresh berries for dessert.\nI try to eat balanced meals, not skip meals, and avoid snacks. I don't watch TV while eating. I enjoy every bite and arrange food nicely." },
-        { number: 4, title: "What's your view on shopping? Is shopping your everyday routine or a pleasant duty?", text: "Shopping is different for everyone. For some it's boring, for others it's fun. I have a balanced opinion.\nWhen I have time, I prefer offline shopping with a friend. I like visiting shopping centres or markets. Stores are bright, clean, and well-organized. Prices are clearly marked.\nWhen I buy clothes, I always try them on. I check if they fit well and look good. I'm not a spendthrift — I think before buying. I prefer custom-made clothes sometimes because they fit better. I ask shop assistants for advice.\nAt the checkout, I don't like long queues. I keep track of my spending.\nOverall, shopping for me is a pleasant duty. It can be enjoyable if you plan ahead and know what you need." },
-        { number: 5, title: "Speak on sports. Are you an active sport-doer or just an enthusiastic fan?", text: "Sport is great for health. It strengthens bones and muscles, lowers blood pressure, and reduces the risk of diabetes. It also helps relieve stress and boosts self-esteem.\nI'm moderately sporty. I do morning exercises every day and work out with online videos twice a week. I do push-ups, sit-ups, lunges, and squats. I also stretch a lot. This helps me build stamina, burn calories, and feel good.\nAt school, I took part in sports competitions. We played handball and football. Sometimes we won, sometimes we lost. I learned teamwork and communication. In swimming, I was usually last, but it helped me relax and improve my posture.\nI'm not a crazy fan, but I like watching figure skating and gymnastics. I admire athletes who are fit and graceful. Sport is great, but you also need a balanced diet, good sleep, and no bad habits." },
-        { number: 6, title: "Will you look back on your college life as a pleasant experience in the future?", text: "Yes, I will. When I think about it, I feel emotional because it's almost over.\nThe beginning was hard. I was a terrible procrastinator, always missing deadlines. I was shy and afraid of speaking in public. I never participated in discussions.\nBut something changed. I learned to cope with my fears. I started studying on my own, making progress. I improved my English — speaking, writing, listening. I became more confident. I even got healthier.\nThe best part was my friends. They supported me through difficult times. We laughed together, shared secrets, and helped each other. They saw me at my worst and still stayed.\nNow I have to pass final exams. I want to do well — not for grades, but because these four years deserve it. I learned pedagogy, psychology, teaching methods. Now I want to become a good teacher, just like my teachers inspired me.\nSo yes, I will look back with a smile — and tears." },
-        { number: 7, title: "The problem of addictions is of current importance, isn't it?", text: "Addictions are a huge problem today. Drugs, alcohol, smoking, and gambling destroy millions of lives.\nDrugs are the most dangerous. People start out of curiosity or peer pressure, then become addicted. Heroin and cocaine cause heart problems, drowsiness, and mental disorders. Withdrawal is painful. Sharing needles spreads HIV.\nAlcohol is especially common among young people. They drink to fit in. Alcohol weakens senses and clouds judgment. Drunk drivers are killers. Long-term abuse damages health.\nSmoking is still common. Nicotine is highly addictive and causes cancer and heart disease. Passive smoking harms others too. Many want to quit but find it very difficult.\nGambling and gaming addictions are growing. Online casinos and games keep people playing for hours. This leads to financial ruin and broken relationships.\nWhy do people become addicted? Often because of stress, family problems, or copying friends. Weak willpower and media glamorizing drinking don't help.\nThe consequences are terrible: ruined careers, broken families, even death. But there is hope — treatment programs, support from doctors, and a healthy lifestyle can help.\nWe need to help addicts recover, not judge them." },
-        { number: 8, title: "Suppose you are a guide and describe the most interesting regions in London.", text: "London is a huge, exciting city. It has four main parts, each very different.\nThe City — This is the financial centre. Banks, offices, stock exchange. Busy during the day, empty at night.\nWestminster — The political heart. Here you'll find:\n· Houses of Parliament and Big Ben — Gothic buildings by the Thames.\n· Westminster Abbey — Where kings and queens have been crowned since 1066.\n· Buckingham Palace — The Queen's home. Watch the Changing of the Guard.\nThe West End — The entertainment centre. Theatres, shops, restaurants.\n· Piccadilly Circus — Busy intersection with bright ads.\n· Trafalgar Square — Nelson's Column with four lions.\n· British Museum — Ancient treasures like the Rosetta Stone and Egyptian mummies.\nThe East End — Once a working-class area. Now has the Tower of London with Crown Jewels and ravens.\nAs Samuel Johnson said: \"If you are tired of London, you are tired of life.\"" },
-        { number: 9, title: "Suppose you are a guide and describe the most interesting regions in Minsk.", text: "Minsk is the capital of Belarus, a modern and beautiful city. It's clean, well-maintained, and has many attractions.\nStart at Independence Avenue — the main street. Visit Independence Square with the Red Church, and Victory Square.\nThe Upper Town — Holy Spirit Cathedral, Town Hall, cobblestone streets. Trinity Suburb with colourful houses by the river.\nMuseums: Museum of the Great Patriotic War, National Art Museum, Museum of History of Minsk.\nParks: Gorky Park, Chelyuskintsev Park, Loshytsky Park.\nTheatres: Opera and Ballet Theatre, Gorky Drama Theatre, Kupala Theatre.\nShopping: Galleria Minsk.\nMinsk has a unique atmosphere and rich history." },
-        { number: 10, title: "TV — a blessing or a curse? Are you a TV-addict?", text: "TV has become a big part of our lives. People rush home to watch their favourite shows.\nTheatre is live — actors feel the audience's reaction and adjust their performance. A good play combines acting, music, and staging.\nCinema is different. Movies have special effects. But it's not \"alive\" — we don't see real people in front of us. Business often ruins art.\nI prefer theatre because it's magical. The play leaves lasting impressions and makes us think." },
-        { number: 11, title: "There is nothing better than travelling by plane. Compare different means of travelling", text: "By plane — fastest and most convenient for long distances. But tickets can be sold out, security checks are stressful, flights are delayed, bad for environment.\nBy train — slower but enjoyable. See landscapes, talk to passengers, prices stable, eco-friendly.\nBy car — control everything, lots of space. But traffic jams, speed cameras, roadworks.\nBy sea — unique experience. Ships are floating cities. But can't come back whenever you want, risk of seasickness.\nEach way has pros and cons. Choice depends on time, budget, and preference." },
-        { number: 12, title: "They say that teaching is a vocation. Do you share this point of view?", text: "I strongly believe teaching is a true calling, not just a job.\nA teacher is an organizer, motivator, facilitator. A good teacher has genuine care for children and affects them positively.\nA teacher must be flexible, have a versatile mind, and stay up-to-date.\nWithout a true calling, a teacher can become disillusioned. Good teachers want to help people express themselves and become independent.\nTeaching is about inspiring, guiding, and making a real difference." },
-        { number: 13, title: "Speak on the most outstanding painters in the world.", text: "Thomas Gainsborough — portraits and landscapes, fine sense of colour.\nJoshua Reynolds — first president of the Royal Academy, grand classical style.\nJohn Constable — devoted to nature, \"The Hay Wain\" is an unsurpassed masterpiece.\nJ.M.W. Turner — child prodigy, used colour to evoke emotions.\nAnthony van Dyck — court painter to King Charles I, elegant style.\nThese painters broke traditions and gained international fame." },
-        { number: 14, title: "Speak on the heroism of the Belarusian people during the Great Patriotic War.", text: "Defenders of Brest Fortress withstood a month-long siege.\nKhatyn — 149 people burned alive, 76 children. Memorial set up in 1969.\nOver 2,230,000 Belarusians killed. 136 villages burned down.\nLiberation began autumn 1943. Minsk liberated July 3, 1944 — now Independence Day.\nWe must remember these heroes." },
-        { number: 15, title: "The ecological situation on our planet is disastrous.", text: "Yes, we face global warming, pollution, deforestation, acid rain, ocean pollution.\nSolutions: renewable energy, public transport, organic farming, recycling, protecting forests, raising awareness.\nThe solutions are in our hands. The Earth is our only home." },
-        { number: 16, title: "What's the difference between watching a movie at the cinema and a play at the theatre?", text: "Theatre is live; cinema is recorded.\nTheatre — each performance unique, actors feed off audience.\nCinema — edited, polished, special effects, audience passive.\nBoth can be wonderful in different ways." },
-        { number: 17, title: "What is the family? Why do people marry and why do they divorce?", text: "Family is the basic unit of society.\nPeople marry for love, companionship, security, starting a family.\nDivorce reasons: poor communication, growing apart, infidelity, financial stress.\nMain problems: communication, unresolved conflicts, different values, sibling rivalry.\nWith respect and support, families can overcome problems." },
-        { number: 18, title: "What makes a good language teacher?", text: "A good teacher is motivator, organizer, facilitator, mentor. They inspire, never put students down.\nMy math teacher influenced me — strict but fair, passionate, made learning exciting. She became my role model." },
-        { number: 19, title: "Are there any differences between eating out and having meals at home?", text: "Restaurants offer atmosphere and service. Fast-food is quick. Home cooking is healthier, affordable, personal.\nFor daily meals, home cooking is more practical. Eating out is for special occasions." },
-        { number: 20, title: "Imagine that you've been invited to a job interview.", text: "Before: Research the company, prepare documents, dress appropriately, be on time, prepare questions.\nAt interview: Make good first impression, answer clearly, show enthusiasm, be yourself, accentuate best attributes.\nAfter: Follow up, reflect and learn.\nBe prepared, enthusiastic, and authentic." },
-        { number: 21, title: "Speak about similarities and differences between living in the country and living in a big city.", text: "Cities have more jobs but higher costs. Good transport but pollution. Fast-paced.\nVillages are peaceful, safe, cleaner air, but fewer amenities and jobs.\nI want the best of both worlds." },
-        { number: 22, title: "Speak on the role of love and marriage in your life.", text: "I believe in love. Conflict is normal but must be handled respectfully.\nI'm in favour of marriage where partners support each other.\nMarriage is a beautiful commitment to grow together." },
-        { number: 23, title: "Imagine that you are an ecologist how would you solve the environmental problems?", text: "Invest in renewable energy. Stricter regulations on emissions. Stop deforestation. Ban single-use plastics. Raise public awareness." },
-        { number: 24, title: "Travel broadens the mind. Speak about travelling of your dream.", text: "My dream is a sea voyage. Ships are like floating cities.\nI want to sail across the ocean, explore new ports, bask under the sun.\nSea travel is unforgettable." },
-        { number: 25, title: "Imagine that you're writing a guidebook to Belarus.", text: "Vitebsk Region — Braslav Lakes, Polotsk, Marc Chagall Museum.\nGrodno Region — Upper Castle, Swiss Valley.\nGomel Region — Turov beekeeping tradition, Gomel Palace.\nBrest Region — Belovezhskaya Pushcha, Brest Fortress, Khatyn.\nNesvizh Castle — Golden Hall, beautiful parks." },
-        { number: 26, title: "You are writing a script of a documentary about Great Britain.", text: "England — Stratford-upon-Avon, Bath, Oxford, Cambridge, Lake District, London.\nScotland — Edinburgh Castle, Highlands, Loch Lomond.\nWales — Conwy Castle, Snowdonia.\nNorthern Ireland — Giant's Causeway, Belfast." },
-        { number: 27, title: "Speak on the role of music in your life.", text: "Music is a powerful tool for emotional well-being. It brings people together and affects us physically.\nMy favourite artist is Eminem — self-taught genius, 15 Grammys, Oscar.\nMusic is not a luxury — it's a necessity." },
-        { number: 28, title: "Doctors say that prevention is better than cure.", text: "I strongly agree. Prevention means giving up smoking, cutting sugar, regular exercise, enough sleep.\nI'm most afraid of the dentist. Regular check-ups are essential.\nAn ounce of prevention is worth a pound of cure." },
-        { number: 29, title: "You are writing a review of your favorite film.", text: "\"Knock on My Door\" — Turkish romantic series, 2020.\nPlot — fake relationship turns real. Beautiful locations, stylish outfits.\nI recommend it for relaxation." },
-        { number: 30, title: "What are the most dangerous diseases of the XXI century?", text: "Coronavirus — global pandemic.\nAllergies — immune system reacts abnormally.\nStress — caused by exams, work, life situations.\nClimate-related diseases — connected with climate changes.\nHealth is our most valuable asset." }
+        { number: 1, title: "Speak on the role of family in people's life.", text: "Family is the most important thing in life..." },
+        { number: 2, title: "Speak on responsibilities of men and women in a family.", text: "In the past, men and women had very different roles..." },
+        { number: 3, title: "Make up an everyday menu.", text: "Life is so busy now that people don't have time to cook..." },
+        { number: 4, title: "What's your view on shopping?", text: "Shopping is different for everyone..." },
+        { number: 5, title: "Speak on sports.", text: "Sport is great for health..." },
+        { number: 6, title: "College life as a pleasant experience?", text: "Yes, I will. When I think about it, I feel emotional..." },
+        { number: 7, title: "The problem of addictions.", text: "Addictions are a huge problem today..." },
+        { number: 8, title: "Guide: interesting regions in London.", text: "London is a huge, exciting city..." },
+        { number: 9, title: "Guide: interesting regions in Minsk.", text: "Minsk is the capital of Belarus..." },
+        { number: 10, title: "TV — a blessing or a curse?", text: "TV has become a big part of our lives..." },
+        { number: 11, title: "Compare different means of travelling.", text: "By plane — fastest and most convenient..." },
+        { number: 12, title: "Teaching is a vocation.", text: "I strongly believe teaching is a true calling..." },
+        { number: 13, title: "Outstanding painters in the world.", text: "Thomas Gainsborough — portraits and landscapes..." },
+        { number: 14, title: "Heroism of Belarusian people during GPW.", text: "Defenders of Brest Fortress..." },
+        { number: 15, title: "Ecological situation on our planet.", text: "Yes, we face global warming..." },
+        { number: 16, title: "Cinema vs theatre.", text: "Theatre is live; cinema is recorded..." },
+        { number: 17, title: "What is the family? Marry and divorce.", text: "Family is the basic unit of society..." },
+        { number: 18, title: "What makes a good language teacher?", text: "A good teacher is motivator, organizer..." },
+        { number: 19, title: "Eating out vs meals at home.", text: "Restaurants offer atmosphere and service..." },
+        { number: 20, title: "Job interview steps.", text: "Before: Research the company..." },
+        { number: 21, title: "Living in the country vs big city.", text: "Cities have more jobs but higher costs..." },
+        { number: 22, title: "Role of love and marriage.", text: "I believe in love..." },
+        { number: 23, title: "How to solve environmental problems?", text: "Invest in renewable energy..." },
+        { number: 24, title: "Travel broadens the mind.", text: "My dream is a sea voyage..." },
+        { number: 25, title: "Guidebook to Belarus.", text: "Vitebsk Region — Braslav Lakes..." },
+        { number: 26, title: "Documentary about Great Britain.", text: "England — Stratford-upon-Avon..." },
+        { number: 27, title: "Role of music in your life.", text: "Music is a powerful tool..." },
+        { number: 28, title: "Prevention is better than cure.", text: "I strongly agree..." },
+        { number: 29, title: "Review of your favorite film.", text: "\"Knock on My Door\" — Turkish series..." },
+        { number: 30, title: "Dangerous diseases of XXI century.", text: "Coronavirus — global pandemic..." }
       ];
 
       const menuToggleBtn = document.getElementById('menuToggleBtn');
       const dropdownMenu = document.getElementById('dropdownMenu');
       const cookiesBtn = document.getElementById('cookiesBtn');
       const cookiesSubmenu = document.getElementById('cookiesSubmenu');
+      const fragFullSubmenu = document.getElementById('fragFullSubmenu');
+      const puprSubmenu = document.getElementById('puprSubmenu');
       const topicModal = document.getElementById('topicModal');
       const topicModalTitle = document.getElementById('topicModalTitle');
       const topicModalBody = document.getElementById('topicModalBody');
       const closeTopicModal = document.getElementById('closeTopicModal');
       const quickExitTopic = document.getElementById('quickExitTopic');
 
-      // Добавляем пункт "Фрагменты" первым
-      const fragmentBtn = document.createElement('button');
-      fragmentBtn.className = 'cookie-topic';
-      fragmentBtn.innerHTML = `<span class="cookie-topic-fragment">📋 Фрагменты</span>`;
-      fragmentBtn.addEventListener('click', function(e) {
-        e.stopPropagation();
-        cookiesSubmenu.classList.remove('visible');
-        dropdownMenu.classList.remove('visible');
-        topicModalTitle.textContent = 'Фрагменты';
-        topicModalBody.textContent = fragmentText;
-        topicModal.classList.add('active');
-        document.body.style.overflow = 'hidden';
-      });
-      cookiesSubmenu.appendChild(fragmentBtn);
+      function buildCookiesMenu() {
+        cookiesSubmenu.innerHTML = '<div class="submenu-header">Меню</div>';
 
-      // Разделитель
-      const divider = document.createElement('hr');
-      divider.className = 'cookies-divider';
-      cookiesSubmenu.appendChild(divider);
-
-      // Добавляем 30 тем
-      topics.forEach(topic => {
-        const btn = document.createElement('button');
-        btn.className = 'cookie-topic';
-        btn.innerHTML = `<span class="cookie-topic-number">${topic.number}.</span> <span>${topic.title}</span>`;
-        btn.addEventListener('click', function(e) {
+        // 1. Фрагменты
+        const fragOldBtn = document.createElement('button');
+        fragOldBtn.className = 'submenu-item';
+        fragOldBtn.innerHTML = '<span style="font-weight:600;">📋 Фрагменты</span>';
+        fragOldBtn.addEventListener('click', function(e) {
           e.stopPropagation();
-          cookiesSubmenu.classList.remove('visible');
-          dropdownMenu.classList.remove('visible');
-          topicModalTitle.textContent = topic.title;
-          topicModalBody.textContent = topic.text;
-          topicModal.classList.add('active');
-          document.body.style.overflow = 'hidden';
+          closeAllMenus();
+          topicModalTitle.textContent = 'Фрагменты';
+          topicModalBody.textContent = `1. Билет: Обучение иноязычному произношению (3 класс)\n2. Билет: Обучение фонетике (интонация)\n3. Билет: Обучение фонетике (согласные)\n4. Билет: Обучение технике письма\n5. Билет: Обучение изучающему чтению\n6. Билет: Обучение ознакомительному чтению\n7. Билет: Обучение поисковому чтению\n8. Билет: Обучение технике чтения\n9. Билет: Обучение аудированию (подготовительные)\n10. Билет: Обучение аудированию (речевые)\n11. Билет: Аудирование (предтекстовый + текстовый)\n12. Билет: Аудирование (текстовый + послетекстовый)\n13. Билет: Грамматика на начальном этапе\n14. Билет: Аудирование (коммуникативные, 10 кл.)\n15. Билет: Рецептивный грамматический навык\n16. Билет: Грамматика (тренировка и применение)\n17. Билет: Лексика (ознакомление + закрепление)\n18. Билет: Лексика (закрепление + автоматизация)\n19. Билет: Лексика (автоматизация + активизация)\n20. Билет: Лексика (дифференциация, имитация)\n21. Билет: Словообразовательная догадка\n22. Билет: Прогнозирование (11 кл.)\n23. Билет: Расширение/сокращение структур\n24. Билет: Диалогическая речь (пошагово)\n25. Билет: Диалог по образцу\n26. Билет: Монологическая речь (пошагово)\n27. Билет: Монолог по образцу\n28. Билет: Чтение (предтекстовый + текстовый, 11 кл.)\n29. Билет: Чтение (текстовый + послетекстовый, 11 кл.)\n30. Билет: Нестандартный урок`;
+          openModal();
         });
-        cookiesSubmenu.appendChild(btn);
-      });
+        cookiesSubmenu.appendChild(fragOldBtn);
 
-      function toggleMenu() {
-        dropdownMenu.classList.toggle('visible');
-        if (!dropdownMenu.classList.contains('visible')) cookiesSubmenu.classList.remove('visible');
+        const div1 = document.createElement('hr');
+        div1.className = 'submenu-divider';
+        cookiesSubmenu.appendChild(div1);
+
+        // 2. Фрагменты (полное)
+        const fragFullBtn = document.createElement('button');
+        fragFullBtn.className = 'submenu-item';
+        fragFullBtn.innerHTML = '<span style="font-weight:600;">📋 Фрагменты (полное)</span><i class="fas fa-chevron-right" style="margin-left:auto;font-size:0.8rem;color:#94a3b8;"></i>';
+        fragFullBtn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          puprSubmenu.classList.remove('visible');
+          fragFullSubmenu.classList.toggle('visible');
+        });
+        cookiesSubmenu.appendChild(fragFullBtn);
+
+        const div2 = document.createElement('hr');
+        div2.className = 'submenu-divider';
+        cookiesSubmenu.appendChild(div2);
+
+        // 3. Пупр
+        const puprBtn = document.createElement('button');
+        puprBtn.className = 'submenu-item';
+        puprBtn.innerHTML = '<span style="font-weight:600;">📋 Пупр</span><i class="fas fa-chevron-right" style="margin-left:auto;font-size:0.8rem;color:#94a3b8;"></i>';
+        puprBtn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          fragFullSubmenu.classList.remove('visible');
+          puprSubmenu.classList.toggle('visible');
+        });
+        cookiesSubmenu.appendChild(puprBtn);
       }
 
-      function closeMenu() {
+      function buildFragFullSubmenu() {
+        fragFullSubmenu.innerHTML = '<div class="submenu-header">Фрагменты (полное)</div>';
+        fragments.forEach(fr => {
+          const btn = document.createElement('button');
+          btn.className = 'submenu-item';
+          btn.innerHTML = `<span><strong>Фрагмент ${fr.number}:</strong> ${fr.title}</span>`;
+          btn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            closeAllMenus();
+            topicModalTitle.textContent = `Фрагмент ${fr.number}: ${fr.title}`;
+            topicModalBody.textContent = fr.text;
+            openModal();
+          });
+          fragFullSubmenu.appendChild(btn);
+        });
+      }
+
+      function buildPuprSubmenu() {
+        puprSubmenu.innerHTML = '<div class="submenu-header">Пупр</div>';
+        topics.forEach(t => {
+          const btn = document.createElement('button');
+          btn.className = 'submenu-item';
+          btn.innerHTML = `<span class="submenu-item-number">${t.number}.</span> <span>${t.title}</span>`;
+          btn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            closeAllMenus();
+            topicModalTitle.textContent = t.title;
+            topicModalBody.textContent = t.text;
+            openModal();
+          });
+          puprSubmenu.appendChild(btn);
+        });
+      }
+
+      function closeAllMenus() {
         dropdownMenu.classList.remove('visible');
         cookiesSubmenu.classList.remove('visible');
+        fragFullSubmenu.classList.remove('visible');
+        puprSubmenu.classList.remove('visible');
+      }
+
+      function openModal() {
+        topicModal.classList.add('active');
+        document.body.style.overflow = 'hidden';
       }
 
       function closeTopicModalFn() {
@@ -845,14 +289,29 @@
         document.body.style.overflow = '';
       }
 
-      menuToggleBtn.addEventListener('click', function(e) { e.stopPropagation(); toggleMenu(); });
-      document.addEventListener('click', function(event) {
-        if (!dropdownMenu.contains(event.target) && event.target !== menuToggleBtn && !menuToggleBtn.contains(event.target)) closeMenu();
+      buildCookiesMenu();
+      buildFragFullSubmenu();
+      buildPuprSubmenu();
+
+      menuToggleBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        dropdownMenu.classList.toggle('visible');
+        if (!dropdownMenu.classList.contains('visible')) {
+          cookiesSubmenu.classList.remove('visible');
+          fragFullSubmenu.classList.remove('visible');
+          puprSubmenu.classList.remove('visible');
+        }
       });
 
-      cookiesBtn.addEventListener('click', function(e) { e.stopPropagation(); cookiesSubmenu.classList.toggle('visible'); });
+      cookiesBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        cookiesSubmenu.classList.toggle('visible');
+      });
+
       document.addEventListener('click', function(event) {
-        if (!cookiesSubmenu.contains(event.target) && event.target !== cookiesBtn && !cookiesBtn.contains(event.target)) cookiesSubmenu.classList.remove('visible');
+        if (!dropdownMenu.contains(event.target) && event.target !== menuToggleBtn && !menuToggleBtn.contains(event.target)) {
+          closeAllMenus();
+        }
       });
 
       closeTopicModal.addEventListener('click', closeTopicModalFn);
@@ -862,20 +321,19 @@
       document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
           closeTopicModalFn();
-          closeMenu();
+          closeAllMenus();
           document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active'));
           document.body.style.overflow = '';
         }
       });
 
-      // Модальные окна
       const privacyModal = document.getElementById('privacyModal');
       const contactModal = document.getElementById('contactModal');
       const aboutModal = document.getElementById('aboutModal');
 
-      document.getElementById('privacyPolicyBtn').addEventListener('click', function(e) { e.stopPropagation(); closeMenu(); privacyModal.classList.add('active'); document.body.style.overflow = 'hidden'; });
-      document.getElementById('contactUsBtn').addEventListener('click', function(e) { e.stopPropagation(); closeMenu(); contactModal.classList.add('active'); document.body.style.overflow = 'hidden'; });
-      document.getElementById('aboutBtn').addEventListener('click', function(e) { e.stopPropagation(); closeMenu(); aboutModal.classList.add('active'); document.body.style.overflow = 'hidden'; });
+      document.getElementById('privacyPolicyBtn').addEventListener('click', function(e) { e.stopPropagation(); closeAllMenus(); privacyModal.classList.add('active'); document.body.style.overflow = 'hidden'; });
+      document.getElementById('contactUsBtn').addEventListener('click', function(e) { e.stopPropagation(); closeAllMenus(); contactModal.classList.add('active'); document.body.style.overflow = 'hidden'; });
+      document.getElementById('aboutBtn').addEventListener('click', function(e) { e.stopPropagation(); closeAllMenus(); aboutModal.classList.add('active'); document.body.style.overflow = 'hidden'; });
 
       document.getElementById('closePrivacyModal').addEventListener('click', function() { privacyModal.classList.remove('active'); document.body.style.overflow = ''; });
       document.getElementById('quickExitPrivacy').addEventListener('click', function() { privacyModal.classList.remove('active'); document.body.style.overflow = ''; });
@@ -884,8 +342,8 @@
       document.getElementById('closeAboutModal').addEventListener('click', function() { aboutModal.classList.remove('active'); document.body.style.overflow = ''; });
       document.getElementById('quickExitAbout').addEventListener('click', function() { aboutModal.classList.remove('active'); document.body.style.overflow = ''; });
 
-      [privacyModal, contactModal, aboutModal].forEach(modal => {
-        modal.addEventListener('click', function(e) { if (e.target === modal) { modal.classList.remove('active'); document.body.style.overflow = ''; } });
+      [privacyModal, contactModal, aboutModal].forEach(m => {
+        m.addEventListener('click', function(e) { if (e.target === m) { m.classList.remove('active'); document.body.style.overflow = ''; } });
       });
     })();
   </script>
